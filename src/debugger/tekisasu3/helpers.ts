@@ -1,4 +1,4 @@
-import { GodotVariable, } from "../debug_runtime";
+import { TekisasuVariable, } from "../debug_runtime";
 import { SceneNode } from "../scene_tree_provider";
 
 export function parse_next_scene_node(params: any[], ofs: { offset: number } = { offset: 0 }): SceneNode {
@@ -29,19 +29,19 @@ export function split_buffers(buffer: Buffer) {
 	return buffers;
 }
 
-export function is_variable_built_in_type(va: GodotVariable) {
+export function is_variable_built_in_type(va: TekisasuVariable) {
 	const type = typeof va.value;
 	return ["number", "bigint", "boolean", "string"].some(x => x === type);
 }
 
-export function build_sub_values(va: GodotVariable) {
+export function build_sub_values(va: TekisasuVariable) {
 	const value = va.value;
 
-	let subValues: GodotVariable[] = undefined;
+	let subValues: TekisasuVariable[] = undefined;
 
 	if (value && Array.isArray(value)) {
 		subValues = value.map((va, i) => {
-			return { name: `${i}`, value: va } as GodotVariable;
+			return { name: `${i}`, value: va } as TekisasuVariable;
 		});
 	} else if (value instanceof Map) {
 		subValues = Array.from(value.keys()).map((va) => {
@@ -49,17 +49,17 @@ export function build_sub_values(va: GodotVariable) {
 				return {
 					name: `${va.type_name()}${va.stringify_value()}`,
 					value: value.get(va),
-				} as GodotVariable;
+				} as TekisasuVariable;
 			} else {
 				return {
 					name: `${va}`,
 					value: value.get(va),
-				} as GodotVariable;
+				} as TekisasuVariable;
 			}
 		});
 	} else if (value && typeof value.sub_values === "function") {
 		subValues = value.sub_values().map((sva) => {
-			return { name: sva.name, value: sva.value } as GodotVariable;
+			return { name: sva.name, value: sva.value } as TekisasuVariable;
 		});
 	}
 
@@ -68,7 +68,7 @@ export function build_sub_values(va: GodotVariable) {
 	subValues?.forEach(build_sub_values);
 }
 
-export function parse_variable(va: GodotVariable, i?: number) {
+export function parse_variable(va: TekisasuVariable, i?: number) {
 	const value = va.value;
 	let rendered_value = "";
 	let reference = 0;

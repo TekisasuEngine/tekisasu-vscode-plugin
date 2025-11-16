@@ -11,21 +11,21 @@ import {
 	get_configuration,
 	get_free_port,
 	get_project_version,
-	verify_godot_version,
+	verify_tekisasu_version,
 	VERIFY_RESULT,
 } from "../../utils";
-import { prompt_for_godot_executable } from "../../utils/prompts";
+import { prompt_for_tekisasu_executable } from "../../utils/prompts";
 import { killSubProcesses, subProcess } from "../../utils/subspawn";
-import { GodotStackFrame, GodotStackVars } from "../debug_runtime";
+import { TekisasuStackFrame, TekisasuStackVars } from "../debug_runtime";
 import { AttachRequestArguments, LaunchRequestArguments, pinnedScene } from "../debugger";
-import { GodotDebugSession } from "./debug_session";
+import { TekisasuDebugSession } from "./debug_session";
 import { build_sub_values, parse_next_scene_node, split_buffers } from "./helpers";
 import { VariantDecoder } from "./variables/variant_decoder";
 import { VariantEncoder } from "./variables/variant_encoder";
 import { RawObject } from "./variables/variants";
 import BBCodeToAnsi from "bbcode-to-ansi";
 
-const log = createLogger("debugger.controller", { output: "Godot Debugger" });
+const log = createLogger("debugger.controller", { output: "Tekisasu Debugger" });
 const socketLog = createLogger("debugger.socket");
 //initialize bbcodeParser and set default output color to grey
 const bbcodeParser = new BBCodeToAnsi("\u001b[38;2;211;211;211m");
@@ -51,7 +51,7 @@ export class ServerController {
 	private didFirstOutput = false;
 	private connectedVersion = "";
 
-	public constructor(public session: GodotDebugSession) {}
+	public constructor(public session: TekisasuDebugSession) {}
 
 	public break() {
 		this.send_command("break");
@@ -110,27 +110,27 @@ export class ServerController {
 	private async start_game(args: LaunchRequestArguments) {
 		log.info("Starting game process");
 
-		let godotPath: string;
+		let tekisasuPath: string;
 		let result: VERIFY_RESULT;
 		if (args.editor_path) {
 			log.info("Using 'editor_path' variable from launch.json");
 
 			log.info(`Verifying version of '${args.editor_path}'`);
-			result = verify_godot_version(args.editor_path, "3");
-			godotPath = result.godotPath;
+			result = verify_tekisasu_version(args.editor_path, "3");
+			tekisasuPath = result.tekisasuPath;
 			log.info(`Verification result: ${result.status}, version: "${result.version}"`);
 
 			switch (result.status) {
 				case "WRONG_VERSION": {
 					const projectVersion = await get_project_version();
-					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
+					const message = `Cannot launch debug session: The current project uses Tekisasu v${projectVersion}, but the specified Tekisasu executable is v${result.version}`;
 					log.warn(message);
 					window.showErrorMessage(message, "Ok");
 					this.abort();
 					return;
 				}
 				case "INVALID_EXE": {
-					const message = `Cannot launch debug session: '${godotPath}' is not a valid Godot executable`;
+					const message = `Cannot launch debug session: '${tekisasuPath}' is not a valid Tekisasu executable`;
 					log.warn(message);
 					window.showErrorMessage(message, "Ok");
 					this.abort();
@@ -141,29 +141,29 @@ export class ServerController {
 				}
 			}
 		} else {
-			log.info("Using 'editorPath.godot3' from settings");
+			log.info("Using 'editorPath.tekisasu3' from settings");
 
-			const settingName = "editorPath.godot3";
-			godotPath = get_configuration(settingName);
+			const settingName = "editorPath.tekisasu3";
+			tekisasuPath = get_configuration(settingName);
 
-			log.info(`Verifying version of '${godotPath}'`);
-			result = verify_godot_version(godotPath, "3");
-			godotPath = result.godotPath;
+			log.info(`Verifying version of '${tekisasuPath}'`);
+			result = verify_tekisasu_version(tekisasuPath, "3");
+			tekisasuPath = result.tekisasuPath;
 			log.info(`Verification result: ${result.status}, version: "${result.version}"`);
 
 			switch (result.status) {
 				case "WRONG_VERSION": {
 					const projectVersion = await get_project_version();
-					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
+					const message = `Cannot launch debug session: The current project uses Tekisasu v${projectVersion}, but the specified Tekisasu executable is v${result.version}`;
 					log.warn(message);
-					prompt_for_godot_executable(message, settingName);
+					prompt_for_tekisasu_executable(message, settingName);
 					this.abort();
 					return;
 				}
 				case "INVALID_EXE": {
-					const message = `Cannot launch debug session: '${godotPath}' is not a valid Godot executable`;
+					const message = `Cannot launch debug session: '${tekisasuPath}' is not a valid Tekisasu executable`;
 					log.warn(message);
-					prompt_for_godot_executable(message, settingName);
+					prompt_for_tekisasu_executable(message, settingName);
 					this.abort();
 					return;
 				}
@@ -172,7 +172,7 @@ export class ServerController {
 
 		this.connectedVersion = result.version;
 
-		let command = `"${godotPath}" --path "${args.project}"`;
+		let command = `"${tekisasuPath}" --path "${args.project}"`;
 		const address = args.address.replace("tcp://", "");
 		command += ` --remote-debug "${address}:${args.port}"`;
 
@@ -409,7 +409,7 @@ export class ServerController {
 				break;
 			}
 			case "stack_dump": {
-				const frames: GodotStackFrame[] = command.parameters.map((sf, i) => {
+				const frames: TekisasuStackFrame[] = command.parameters.map((sf, i) => {
 					return {
 						id: i,
 						file: sf.get("file"),
@@ -545,7 +545,7 @@ export class ServerController {
 		});
 	}
 
-	public trigger_breakpoint(stackFrames: GodotStackFrame[]) {
+	public trigger_breakpoint(stackFrames: TekisasuStackFrame[]) {
 		let continueStepping = false;
 		const stackCount = stackFrames.length;
 		if (stackCount === 0) {
@@ -615,7 +615,7 @@ export class ServerController {
 	}
 
 	private do_stack_frame_vars(parameters: any[]) {
-		const stackVars = new GodotStackVars();
+		const stackVars = new TekisasuStackVars();
 
 		let localsRemaining = parameters[0];
 		let membersRemaining = parameters[1 + localsRemaining * 2];

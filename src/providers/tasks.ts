@@ -18,7 +18,7 @@ interface GDTaskDefinition extends TaskDefinition {
 export class GDTaskProvider implements TaskProvider {
 	constructor(private context: ExtensionContext) {
 		context.subscriptions.push(
-			vscode.tasks.registerTaskProvider("godot", this),
+			vscode.tasks.registerTaskProvider("tekisasu", this),
 		);
 	}
 
@@ -28,10 +28,10 @@ export class GDTaskProvider implements TaskProvider {
 		const workspaceFolder = vscode.workspace.workspaceFolders[0];
 		const taskName = "test";
 		const kind: GDTaskDefinition = {
-			type: "godot",
+			type: "tekisasu",
 			task: taskName,
 		};
-		const task = new vscode.Task(kind, workspaceFolder, taskName, "godot");
+		const task = new vscode.Task(kind, workspaceFolder, taskName, "tekisasu");
 		tasks.push(task);
 
 		return tasks;

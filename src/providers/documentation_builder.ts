@@ -3,7 +3,7 @@ import { SymbolKind } from "vscode-languageclient";
 import * as Prism from "prismjs";
 import * as csharp from "prismjs/components/prism-csharp";
 import { marked } from "marked";
-import type { GodotNativeSymbol } from "./documentation_types";
+import type { TekisasuNativeSymbol } from "./documentation_types";
 import { get_extension_uri } from "../utils";
 import yabbcode = require("ya-bbcode");
 
@@ -55,7 +55,7 @@ if (theme === vscode.ColorThemeKind.Dark) {
 	}`;
 }
 
-export function make_html_content(webview: vscode.Webview, symbol: GodotNativeSymbol, target?: string): string {
+export function make_html_content(webview: vscode.Webview, symbol: TekisasuNativeSymbol, target?: string): string {
 	const pagemapJsUri = webview.asWebviewUri(get_extension_uri("media", "pagemap.js"));
 	const prismCssUri = webview.asWebviewUri(get_extension_uri("media", "prism.css"));
 	const docsCssUri = webview.asWebviewUri(get_extension_uri("media", "docs.css"));
@@ -92,7 +92,7 @@ export function make_html_content(webview: vscode.Webview, symbol: GodotNativeSy
 
 				var vscode = acquireVsCodeApi();
 				function inspect(native_class, symbol_name) {
-					if (typeof (godot_class) != 'undefined' && godot_class == native_class) {
+					if (typeof (tekisasu_class) != 'undefined' && tekisasu_class == native_class) {
 						document.getElementById(symbol_name).scrollIntoView();
 					} else {
 						vscode.postMessage({
@@ -117,10 +117,10 @@ export function make_html_content(webview: vscode.Webview, symbol: GodotNativeSy
 		</html>`;
 }
 
-export function make_symbol_document(symbol: GodotNativeSymbol): string {
+export function make_symbol_document(symbol: TekisasuNativeSymbol): string {
 	const classlink = make_link(symbol.native_class, undefined);
 
-	function make_function_signature(s: GodotNativeSymbol, with_class = false) {
+	function make_function_signature(s: TekisasuNativeSymbol, with_class = false) {
 		const parts = /\((.*)?\)\s*\-\>\s*(([A-z0-9]+)?)$/.exec(s.detail);
 		if (!parts) {
 			return "";
@@ -136,7 +136,7 @@ export function make_symbol_document(symbol: GodotNativeSymbol): string {
 		})}( ${args} )`;
 	}
 
-	function make_symbol_elements(s: GodotNativeSymbol, with_class = false): { index?: string; body: string } {
+	function make_symbol_elements(s: TekisasuNativeSymbol, with_class = false): { index?: string; body: string } {
 		switch (s.kind) {
 			case SymbolKind.Property:
 			case SymbolKind.Variable: {
@@ -234,7 +234,7 @@ export function make_symbol_document(symbol: GodotNativeSymbol): string {
 		let others = "";
 
 		if (symbol.children) {
-			for (const s of symbol.children as GodotNativeSymbol[]) {
+			for (const s of symbol.children as TekisasuNativeSymbol[]) {
 				const elements = make_symbol_elements(s);
 				switch (s.kind) {
 					case SymbolKind.Property:
@@ -274,7 +274,7 @@ export function make_symbol_document(symbol: GodotNativeSymbol): string {
 		add_group("Property Descriptions", propertyies);
 		add_group("Method Descriptions", methods);
 		add_group("Other Members", others);
-		doc += element("script", `var godot_class = "${symbol.native_class}";`);
+		doc += element("script", `var tekisasu_class = "${symbol.native_class}";`);
 
 		return doc;
 	}

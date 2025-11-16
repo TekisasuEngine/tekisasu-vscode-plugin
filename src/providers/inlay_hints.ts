@@ -119,12 +119,12 @@ export class GDInlayHintsProvider implements InlayHintsProvider {
 
 			const symbols =
 				typeof symbolsRequest[0] === "object" && "children" in symbolsRequest[0]
-					? (symbolsRequest[0].children as DocumentSymbol[]) // godot 4.0+ returns an array of children
-					: symbolsRequest; // godot 3.2 and below returns an array of symbols
+					? (symbolsRequest[0].children as DocumentSymbol[]) // tekisasu 4.0+ returns an array of children
+					: symbolsRequest; // tekisasu 3.2 and below returns an array of symbols
 
 			const hasDetail = symbols.some((s) => s.detail);
 
-			// TODO: make sure godot reports the correct location for variable declaration symbols
+			// TODO: make sure tekisasu reports the correct location for variable declaration symbols
 			// (allowing the use of regex only on ranges provided by the LSP (textDocument/documentSymbol))
 
 			// since neither LSP or the grammar know whether a variable is inferred or not,
@@ -135,7 +135,7 @@ export class GDInlayHintsProvider implements InlayHintsProvider {
 				if (token.isCancellationRequested) {
 					break;
 				}
-				// TODO: until godot supports nested document symbols, we need to send
+				// TODO: until tekisasu supports nested document symbols, we need to send
 				// a hover request for each variable declaration that is nested
 				const start = document.positionAt(match.index + match[0].length - 1);
 

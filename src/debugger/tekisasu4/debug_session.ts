@@ -10,18 +10,18 @@ import { DebugProtocol } from "@vscode/debugprotocol";
 import { Subject } from "await-notify";
 import * as fs from "node:fs";
 import { createLogger } from "../../utils";
-import { GodotDebugData } from "../debug_runtime";
+import { TekisasuDebugData } from "../debug_runtime";
 import { AttachRequestArguments, LaunchRequestArguments } from "../debugger";
 import { InspectorProvider } from "../inspector_provider";
 import { SceneTreeProvider } from "../scene_tree_provider";
 import { ServerController } from "./server_controller";
 import { VariablesManager } from "./variables/variables_manager";
 
-const log = createLogger("debugger.session", { output: "Godot Debugger" });
+const log = createLogger("debugger.session", { output: "Tekisasu Debugger" });
 
-export class GodotDebugSession extends LoggingDebugSession {
+export class TekisasuDebugSession extends LoggingDebugSession {
 	public controller = new ServerController(this);
-	public debug_data = new GodotDebugData(this);
+	public debug_data = new TekisasuDebugData(this);
 	public sceneTree: SceneTreeProvider;
 	public inspector: InspectorProvider;
 	private configuration_done: Subject = new Subject();

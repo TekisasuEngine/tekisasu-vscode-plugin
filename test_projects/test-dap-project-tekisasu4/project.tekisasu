@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Test DAP project godot4"
+config/name="Test DAP project tekisasu4"
 run/main_scene="res://ScopeVars.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 

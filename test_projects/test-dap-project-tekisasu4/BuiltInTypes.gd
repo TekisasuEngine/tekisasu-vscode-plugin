@@ -8,7 +8,7 @@ func _ready() -> void:
   var int_var = 42
   var float_var = 3.14
   var bool_var = true
-  var string_var = "Hello, Godot!"
+  var string_var = "Hello, Tekisasu!"
   var nil_var = null
   var vector2 = Vector2(10, 20)
   var vector3 = Vector3(1, 2, 3)

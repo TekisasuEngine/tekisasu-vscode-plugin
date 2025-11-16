@@ -21,14 +21,14 @@ import {
 	workspace,
 } from "vscode";
 import { createLogger, get_project_version, register_command, set_context } from "../utils";
-import { GodotVariable } from "./debug_runtime";
-import { GodotDebugSession as Godot3DebugSession } from "./godot3/debug_session";
-import { GodotDebugSession as Godot4DebugSession } from "./godot4/debug_session";
-import { GodotObject } from "./godot4/variables/godot_object_promise";
+import { TekisasuVariable } from "./debug_runtime";
+import { TekisasuDebugSession as Tekisasu3DebugSession } from "./tekisasu3/debug_session";
+import { TekisasuDebugSession as Tekisasu4DebugSession } from "./tekisasu4/debug_session";
+import { TekisasuObject } from "./tekisasu4/variables/tekisasu_object_promise";
 import { InspectorProvider, RemoteProperty } from "./inspector_provider";
 import { SceneNode, SceneTreeProvider } from "./scene_tree_provider";
 
-const log = createLogger("debugger", { output: "Godot Debugger" });
+const log = createLogger("debugger", { output: "Tekisasu Debugger" });
 
 export interface LaunchRequestArguments extends DebugProtocol.LaunchRequestArguments {
 	address: string;
@@ -78,21 +78,21 @@ class GDFileDecorationProvider implements FileDecorationProvider {
 	}
 }
 
-export class GodotDebugger implements DebugAdapterDescriptorFactory, DebugConfigurationProvider {
-	public session?: Godot3DebugSession | Godot4DebugSession;
+export class TekisasuDebugger implements DebugAdapterDescriptorFactory, DebugConfigurationProvider {
+	public session?: Tekisasu3DebugSession | Tekisasu4DebugSession;
 	public sceneTree = new SceneTreeProvider();
 	public inspector = new InspectorProvider();
 
 	fileDecorations = new GDFileDecorationProvider();
 
 	constructor(private context: ExtensionContext) {
-		log.info("Initializing Godot Debugger");
+		log.info("Initializing Tekisasu Debugger");
 
 		this.restore_pinned_file();
 
 		context.subscriptions.push(
-			debug.registerDebugConfigurationProvider("godot", this),
-			debug.registerDebugAdapterDescriptorFactory("godot", this),
+			debug.registerDebugConfigurationProvider("tekisasu", this),
+			debug.registerDebugAdapterDescriptorFactory("tekisasu", this),
 			window.registerFileDecorationProvider(this.fileDecorations),
 			register_command("debugger.inspectNode", this.inspect_node.bind(this)),
 			register_command("debugger.refreshSceneTree", this.refresh_scene_tree.bind(this)),
@@ -114,9 +114,9 @@ export class GodotDebugger implements DebugAdapterDescriptorFactory, DebugConfig
 		log.info(`Project version identified as ${projectVersion}`);
 
 		if (projectVersion.startsWith("4")) {
-			this.session = new Godot4DebugSession(projectVersion);
+			this.session = new Tekisasu4DebugSession(projectVersion);
 		} else {
-			this.session = new Godot3DebugSession();
+			this.session = new Tekisasu3DebugSession();
 		}
 		this.context.subscriptions.push(this.session);
 
@@ -187,7 +187,7 @@ export class GodotDebugger implements DebugAdapterDescriptorFactory, DebugConfig
 
 		const default_config = {
 			name: `Debug ${path} : 'File'}`,
-			type: "godot",
+			type: "tekisasu",
 			request: "launch",
 			scene: "current",
 		};
@@ -222,7 +222,7 @@ export class GodotDebugger implements DebugAdapterDescriptorFactory, DebugConfig
 		}
 		const default_config = {
 			name: `Debug ${path} : 'File'}`,
-			type: "godot",
+			type: "tekisasu",
 			request: "launch",
 			scene: "pinned",
 		};
@@ -278,16 +278,16 @@ export class GodotDebugger implements DebugAdapterDescriptorFactory, DebugConfig
 	}
 
 	private async fill_inspector(element: SceneNode | RemoteProperty, force_refresh = false) {
-		if (this.session instanceof Godot4DebugSession) {
-			const godot_object = await this.session.variables_manager?.get_godot_object(
+		if (this.session instanceof Tekisasu4DebugSession) {
+			const tekisasu_object = await this.session.variables_manager?.get_tekisasu_object(
 				BigInt(element.object_id),
 				force_refresh,
 			);
-			if (!godot_object) {
+			if (!tekisasu_object) {
 				return;
 			}
-			const va = this.create_godot_variable(godot_object);
-			this.inspector.fill_tree(element.label, godot_object.type, Number(godot_object.godot_id), va);
+			const va = this.create_tekisasu_variable(tekisasu_object);
+			this.inspector.fill_tree(element.label, tekisasu_object.type, Number(tekisasu_object.tekisasu_id), va);
 		} else {
 			this.session?.controller.request_inspect_object(BigInt(element.object_id));
 			this.session?.inspect_callbacks.set(BigInt(element.object_id), (class_name, variable) => {
@@ -296,14 +296,14 @@ export class GodotDebugger implements DebugAdapterDescriptorFactory, DebugConfig
 		}
 	}
 
-	private create_godot_variable(godot_object: GodotObject): GodotVariable {
+	private create_tekisasu_variable(tekisasu_object: TekisasuObject): TekisasuVariable {
 		return {
 			value: {
-				type_name: () => godot_object.type,
-				stringify_value: () => `<${godot_object.godot_id}>`,
-				sub_values: () => godot_object.sub_values,
+				type_name: () => tekisasu_object.type,
+				stringify_value: () => `<${tekisasu_object.tekisasu_id}>`,
+				sub_values: () => tekisasu_object.sub_values,
 			},
-		} as GodotVariable;
+		} as TekisasuVariable;
 	}
 
 	public refresh_scene_tree() {

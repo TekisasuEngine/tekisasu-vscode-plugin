@@ -7,7 +7,7 @@ import {
 import * as path from "node:path";
 import { get_extension_uri } from "../utils";
 
-const iconDir = get_extension_uri("resources", "godot_icons").fsPath;
+const iconDir = get_extension_uri("resources", "tekisasu_icons").fsPath;
 
 export class SceneNode extends TreeItem {
 	public path: string;

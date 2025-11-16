@@ -6,6 +6,6 @@ module.exports = defineConfig(
 		label: 'unitTests',
 		files: 'out/**/*.test.js',
 		launchArgs: ['--disable-extensions'],
-		workspaceFolder: './test_projects/test-dap-project-godot4',
+		workspaceFolder: './test_projects/test-dap-project-tekisasu4',
 	}
 );

@@ -46,7 +46,7 @@ export class ScenePreviewProvider implements TreeDataProvider<SceneNode>, TreeDr
 	onDidChangeTreeData = this.changeTreeEvent.event;
 
 	constructor(private context: ExtensionContext) {
-		this.tree = vscode.window.createTreeView("godotTools.scenePreview", {
+		this.tree = vscode.window.createTreeView("tekisasuTools.scenePreview", {
 			treeDataProvider: this,
 			dragAndDropController: this,
 		});
@@ -71,7 +71,7 @@ export class ScenePreviewProvider implements TreeDataProvider<SceneNode>, TreeDr
 			this.tree.onDidChangeSelection(this.tree_selection_changed),
 			this.tree,
 		);
-		const result: string | undefined = this.context.workspaceState.get("godotTools.scenePreview.lockedScene");
+		const result: string | undefined = this.context.workspaceState.get("tekisasuTools.scenePreview.lockedScene");
 		if (result) {
 			if (fs.existsSync(result)) {
 				set_context("scenePreview.locked", true);
@@ -88,13 +88,13 @@ export class ScenePreviewProvider implements TreeDataProvider<SceneNode>, TreeDr
 		data: vscode.DataTransfer,
 		token: vscode.CancellationToken,
 	): void | Thenable<void> {
-		data.set("godot/scene", new vscode.DataTransferItem(this.currentScene));
-		data.set("godot/node", new vscode.DataTransferItem(source[0]));
-		data.set("godot/path", new vscode.DataTransferItem(source[0].path));
-		data.set("godot/relativePath", new vscode.DataTransferItem(source[0].relativePath));
-		data.set("godot/class", new vscode.DataTransferItem(source[0].className));
-		data.set("godot/unique", new vscode.DataTransferItem(source[0].unique));
-		data.set("godot/label", new vscode.DataTransferItem(source[0].label));
+		data.set("tekisasu/scene", new vscode.DataTransferItem(this.currentScene));
+		data.set("tekisasu/node", new vscode.DataTransferItem(source[0]));
+		data.set("tekisasu/path", new vscode.DataTransferItem(source[0].path));
+		data.set("tekisasu/relativePath", new vscode.DataTransferItem(source[0].relativePath));
+		data.set("tekisasu/class", new vscode.DataTransferItem(source[0].className));
+		data.set("tekisasu/unique", new vscode.DataTransferItem(source[0].unique));
+		data.set("tekisasu/label", new vscode.DataTransferItem(source[0].label));
 	}
 
 	public async on_file_changed(uri: vscode.Uri) {
@@ -168,13 +168,13 @@ export class ScenePreviewProvider implements TreeDataProvider<SceneNode>, TreeDr
 	private lock_preview() {
 		this.scenePreviewLocked = true;
 		set_context("scenePreview.locked", true);
-		this.context.workspaceState.update("godotTools.scenePreview.lockedScene", this.currentScene);
+		this.context.workspaceState.update("tekisasuTools.scenePreview.lockedScene", this.currentScene);
 	}
 
 	private unlock_preview() {
 		this.scenePreviewLocked = false;
 		set_context("scenePreview.locked", false);
-		this.context.workspaceState.update("godotTools.scenePreview.lockedScene", "");
+		this.context.workspaceState.update("tekisasuTools.scenePreview.lockedScene", "");
 		this.refresh();
 	}
 
@@ -281,7 +281,7 @@ class UniqueDecorationProvider implements vscode.FileDecorationProvider {
 	constructor(private previewer: ScenePreviewProvider) {}
 
 	provideFileDecoration(uri: Uri, token: CancellationToken): FileDecoration | undefined {
-		if (uri.scheme !== "godot") return undefined;
+		if (uri.scheme !== "tekisasu") return undefined;
 
 		const node = this.previewer.scene?.nodes.get(uri.path);
 		if (node?.unique) {
@@ -303,7 +303,7 @@ class ScriptDecorationProvider implements vscode.FileDecorationProvider {
 	constructor(private previewer: ScenePreviewProvider) {}
 
 	provideFileDecoration(uri: Uri, token: CancellationToken): FileDecoration | undefined {
-		if (uri.scheme !== "godot") return undefined;
+		if (uri.scheme !== "tekisasu") return undefined;
 
 		const node = this.previewer.scene?.nodes.get(uri.path);
 		if (node?.hasScript) {

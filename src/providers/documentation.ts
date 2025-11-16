@@ -11,9 +11,9 @@ import type {
 import type { NotificationMessage } from "vscode-jsonrpc";
 import type {
 	NativeSymbolInspectParams,
-	GodotNativeSymbol,
-	GodotNativeClassInfo,
-	GodotCapabilities,
+	TekisasuNativeSymbol,
+	TekisasuNativeClassInfo,
+	TekisasuCapabilities,
 } from "./documentation_types";
 import { make_html_content } from "./documentation_builder";
 import { createLogger, get_configuration, get_extension_uri, make_docs_uri } from "../utils";
@@ -22,8 +22,8 @@ import { globals } from "../extension";
 const log = createLogger("providers.docs");
 
 export class GDDocumentationProvider implements CustomReadonlyEditorProvider {
-	public classInfo = new Map<string, GodotNativeClassInfo>();
-	public symbolDb = new Map<string, GodotNativeSymbol>();
+	public classInfo = new Map<string, TekisasuNativeClassInfo>();
+	public symbolDb = new Map<string, TekisasuNativeSymbol>();
 	public htmlDb = new Map<string, string>();
 
 	private ready = false;
@@ -41,7 +41,7 @@ export class GDDocumentationProvider implements CustomReadonlyEditorProvider {
 	}
 
 	public register_capabilities(message: NotificationMessage) {
-		for (const gdclass of (message.params as GodotCapabilities).native_classes) {
+		for (const gdclass of (message.params as TekisasuCapabilities).native_classes) {
 			this.classInfo.set(gdclass.name, gdclass);
 		}
 		for (const gdclass of this.classInfo.values()) {
@@ -62,7 +62,7 @@ export class GDDocumentationProvider implements CustomReadonlyEditorProvider {
 
 	public async list_native_classes() {
 		const classname = await vscode.window.showQuickPick([...this.classInfo.keys()].sort(), {
-			placeHolder: "Type godot class name here",
+			placeHolder: "Type tekisasu class name here",
 			canPickMany: false,
 		});
 		if (classname) {
@@ -85,7 +85,7 @@ export class GDDocumentationProvider implements CustomReadonlyEditorProvider {
 	): Promise<void> {
 		const className = document.uri.path.split(".")[0];
 		const target = document.uri.fragment;
-		let symbol: GodotNativeSymbol = null;
+		let symbol: TekisasuNativeSymbol = null;
 
 		panel.webview.options = {
 			enableScripts: true,
@@ -105,7 +105,7 @@ export class GDDocumentationProvider implements CustomReadonlyEditorProvider {
 
 			const response = await globals.lsp.client.send_request("textDocument/nativeSymbol", params);
 
-			symbol = response as GodotNativeSymbol;
+			symbol = response as TekisasuNativeSymbol;
 			symbol.class_info = this.classInfo.get(symbol.name);
 			this.symbolDb.set(symbol.name, symbol);
 		}
@@ -125,7 +125,7 @@ export class GDDocumentationProvider implements CustomReadonlyEditorProvider {
 			panel.webview.html = this.htmlDb.get(className).replace("displayMinimap", "none;");
 		}
 
-		panel.iconPath = get_extension_uri("resources/godot_icon.svg");
+		panel.iconPath = get_extension_uri("resources/tekisasu_icon.svg");
 		panel.webview.onDidReceiveMessage((msg) => {
 			if (msg.type === "INSPECT_NATIVE_SYMBOL") {
 				const uri = make_docs_uri(msg.data.native_class, msg.data.symbol_name);

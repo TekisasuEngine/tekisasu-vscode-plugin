@@ -13,7 +13,7 @@ chaiAsPromised.then((module) => {
 
 import { promisify } from "node:util";
 import { execFile } from "node:child_process";
-import { clean_godot_path } from "../../../utils";
+import { clean_tekisasu_path } from "../../../utils";
 
 const execFileAsync = promisify(execFile);
 
@@ -196,9 +196,9 @@ async function startDebugging(
 ): Promise<void> {
 	const t0 = performance.now();
 	const debugConfig: vscode.DebugConfiguration = {
-		type: "godot",
+		type: "tekisasu",
 		request: "launch",
-		name: "Godot Debug",
+		name: "Tekisasu Debug",
 		scene: scene,
 		additional_options: "--headless",
 	};
@@ -214,26 +214,26 @@ async function startDebugging(
 suite("DAP Integration Tests - Variable Scopes", () => {
 	// workspaceFolder should match `.vscode-test.js`::workspaceFolder
 	const workspaceFolder = vscode.workspace.workspaceFolders?.[0].uri.fsPath;
-	if (!workspaceFolder || !workspaceFolder.endsWith("test-dap-project-godot4")) {
-		throw new Error(`workspaceFolder should contain 'test-dap-project-godot4' project, got: ${workspaceFolder}`);
+	if (!workspaceFolder || !workspaceFolder.endsWith("test-dap-project-tekisasu4")) {
+		throw new Error(`workspaceFolder should contain 'test-dap-project-tekisasu4' project, got: ${workspaceFolder}`);
 	}
 
 	suiteSetup(async function () {
-		this.timeout(20000); // enough time to do `godot --import`
+		this.timeout(20000); // enough time to do `tekisasu --import`
 		console.log("Environment Variables:");
 		for (const [key, value] of Object.entries(process.env)) {
 			console.log(`${key}: ${value}`);
 		}
 
-		// init the godot project by importing it in godot engine:
-		const config = vscode.workspace.getConfiguration("godotTools");
-		// config.update("editorPath.godot4", "godot4", vscode.ConfigurationTarget.Workspace);
+		// init the tekisasu project by importing it in tekisasu engine:
+		const config = vscode.workspace.getConfiguration("tekisasuTools");
+		// config.update("editorPath.tekisasu4", "tekisasu4", vscode.ConfigurationTarget.Workspace);
 
-		const godot4_path = clean_godot_path(config.get<string>("editorPath.godot4"));
+		const tekisasu4_path = clean_tekisasu_path(config.get<string>("editorPath.tekisasu4"));
 
 		// get the path for currently opened project in vscode test instance:
-		console.log("Executing", [godot4_path, "--headless", "--import", workspaceFolder]);
-		const exec_res = await execFileAsync(godot4_path, ["--headless", "--import", workspaceFolder], {
+		console.log("Executing", [tekisasu4_path, "--headless", "--import", workspaceFolder]);
+		const exec_res = await execFileAsync(tekisasu4_path, ["--headless", "--import", workspaceFolder], {
 			shell: true,
 			cwd: workspaceFolder,
 		});
@@ -342,7 +342,7 @@ suite("DAP Integration Tests - Variable Scopes", () => {
 	})?.timeout(10000);
 
 	test("should return all local variables", async () => {
-		/** {@link file://./../../../../test_projects/test-dap-project-godot4/ScopeVars.gd"} */
+		/** {@link file://./../../../../test_projects/test-dap-project-tekisasu4/ScopeVars.gd"} */
 		const breakpointLocations = await getBreakpointLocations(path.join(workspaceFolder, "ScopeVars.gd"));
 		const breakpoint = new vscode.SourceBreakpoint(breakpointLocations["breakpoint::ScopeVars::_ready"]);
 		vscode.debug.addBreakpoints([breakpoint]);
@@ -361,7 +361,7 @@ suite("DAP Integration Tests - Variable Scopes", () => {
 	})?.timeout(10000);
 
 	test("should return all member variables", async () => {
-		/** {@link file://./../../../../test_projects/test-dap-project-godot4/ScopeVars.gd"} */
+		/** {@link file://./../../../../test_projects/test-dap-project-tekisasu4/ScopeVars.gd"} */
 		const breakpointLocations = await getBreakpointLocations(path.join(workspaceFolder, "ScopeVars.gd"));
 		const breakpoint = new vscode.SourceBreakpoint(breakpointLocations["breakpoint::ScopeVars::_ready"]);
 		vscode.debug.addBreakpoints([breakpoint]);
@@ -400,7 +400,7 @@ suite("DAP Integration Tests - Variable Scopes", () => {
 		expect(variables).to.containSubset([{ name: "int_var", value: "42" }]);
 		expect(variables).to.containSubset([{ name: "float_var", value: "3.14" }]);
 		expect(variables).to.containSubset([{ name: "bool_var", value: "true" }]);
-		expect(variables).to.containSubset([{ name: "string_var", value: "Hello, Godot!" }]);
+		expect(variables).to.containSubset([{ name: "string_var", value: "Hello, Tekisasu!" }]);
 		expect(variables).to.containSubset([{ name: "nil_var", value: "null" }]);
 		expect(variables).to.containSubset([{ name: "vector2", value: "Vector2(10, 20)" }]);
 		expect(variables).to.containSubset([{ name: "vector3", value: "Vector3(1, 2, 3)" }]);

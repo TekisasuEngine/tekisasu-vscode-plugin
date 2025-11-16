@@ -14,7 +14,7 @@ import { Socket } from "net";
 import MessageBuffer from "./MessageBuffer";
 import { createLogger } from "../utils";
 
-const log = createLogger("lsp.io", { output: "Godot LSP" });
+const log = createLogger("lsp.io", { output: "Tekisasu LSP" });
 
 export type Message = RequestMessage | ResponseMessage | NotificationMessage;
 

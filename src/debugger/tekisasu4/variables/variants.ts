@@ -1,4 +1,4 @@
-import { GodotVariable } from "../../debug_runtime";
+import { TekisasuVariable } from "../../debug_runtime";
 
 export enum GDScriptTypes {
 	NIL = 0,
@@ -72,7 +72,7 @@ export interface BufferModel {
 
 export interface GDObject {
 	stringify_value(): string;
-	sub_values(): GodotVariable[];
+	sub_values(): TekisasuVariable[];
 	type_name(): string;
 }
 
@@ -93,7 +93,7 @@ export class Vector3 implements GDObject {
 		)})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "x", value: this.x },
 			{ name: "y", value: this.y },
@@ -126,7 +126,7 @@ export class Vector4 implements GDObject {
 			clean_number(this.z)}, ${clean_number(this.w)})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "x", value: this.x },
 			{ name: "y", value: this.y },
@@ -154,7 +154,7 @@ export class Vector2 implements GDObject {
 		return `(${clean_number(this.x)}, ${clean_number(this.y)})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "x", value: this.x },
 			{ name: "y", value: this.y },
@@ -180,7 +180,7 @@ export class Basis implements GDObject {
 		return `(${this.x.stringify_value()}, ${this.y.stringify_value()}, ${this.z.stringify_value()})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "x", value: this.x },
 			{ name: "y", value: this.y },
@@ -200,7 +200,7 @@ export class AABB implements GDObject {
 		return `(${this.position.stringify_value()}, ${this.size.stringify_value()})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "position", value: this.position },
 			{ name: "size", value: this.size },
@@ -226,7 +226,7 @@ export class Color implements GDObject {
 		)}, ${clean_number(this.a)})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "r", value: this.r },
 			{ name: "g", value: this.g },
@@ -253,7 +253,7 @@ export class NodePath implements GDObject {
 		}${this.sub_names.join(":")})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "names", value: this.names },
 			{ name: "sub_names", value: this.sub_names },
@@ -279,7 +279,7 @@ export class ObjectId implements GDObject {
 		return `<${this.id}>`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [{ name: "id", value: this.id }];
 	}
 
@@ -308,7 +308,7 @@ export class Plane implements GDObject {
 		)}, ${clean_number(this.d)})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "x", value: this.x },
 			{ name: "y", value: this.y },
@@ -336,7 +336,7 @@ export class Quat implements GDObject {
 		)}, ${clean_number(this.w)})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "x", value: this.x },
 			{ name: "y", value: this.y },
@@ -357,7 +357,7 @@ export class Rect2 implements GDObject {
 		return `(${this.position.stringify_value()} - ${this.size.stringify_value()})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "position", value: this.position },
 			{ name: "size", value: this.size },
@@ -383,7 +383,7 @@ export class Projection implements GDObject {
 		return `(${this.x.stringify_value()}, ${this.y.stringify_value()}, ${this.z.stringify_value()}, ${this.w.stringify_value()})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "x", value: this.x },
 			{ name: "y", value: this.y },
@@ -404,7 +404,7 @@ export class Transform3D implements GDObject {
 		return `(${this.basis.stringify_value()} - ${this.origin.stringify_value()})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "basis", value: this.basis },
 			{ name: "origin", value: this.origin },
@@ -423,7 +423,7 @@ export class Transform2D implements GDObject {
 		return `(${this.origin.stringify_value()} - (${this.x.stringify_value()}, ${this.y.stringify_value()})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "origin", value: this.origin },
 			{ name: "x", value: this.x },
@@ -443,7 +443,7 @@ export class StringName implements GDObject {
 		return this.value;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [
 			{ name: "value", value: this.value },
 		];
@@ -459,7 +459,7 @@ export class Callable implements GDObject {
 		return "()";
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [];
 	}
 
@@ -475,7 +475,7 @@ export class Signal implements GDObject {
 		return `(${this.name}, ${this.oid.stringify_value()})`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return undefined;
 	}
 

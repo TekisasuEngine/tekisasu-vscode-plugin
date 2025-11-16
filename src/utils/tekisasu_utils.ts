@@ -12,7 +12,7 @@ export function get_editor_data_dir(): string {
 			? `${process.env.HOME}/Library/Preferences`
 			: `${process.env.HOME}/.local/share`);
 
-	return path.join(appdata, "Godot");
+	return path.join(appdata, "Tekisasu");
 }
 
 let projectDir: string | undefined = undefined;
@@ -25,7 +25,7 @@ export async function get_project_dir(): Promise<string | undefined> {
 
 	let file = "";
 	if (vscode.workspace.workspaceFolders !== undefined) {
-		const files = await vscode.workspace.findFiles("**/project.godot", null);
+		const files = await vscode.workspace.findFiles("**/project.tekisasu", null);
 
 		if (files.length === 0) {
 			return undefined;
@@ -77,7 +77,7 @@ export async function get_project_version(): Promise<string | undefined> {
 		return undefined;
 	}
 
-	let godotVersion = "3.x";
+	let tekisasuVersion = "3.x";
 	const document = await vscode.workspace.openTextDocument(projectFile);
 	const text = document.getText();
 
@@ -86,11 +86,11 @@ export async function get_project_version(): Promise<string | undefined> {
 		const line = match[0];
 		const version = line.match(/\"(4.[0-9]+)\"/);
 		if (version) {
-			godotVersion = version[1];
+			tekisasuVersion = version[1];
 		}
 	}
 
-	projectVersion = godotVersion;
+	projectVersion = tekisasuVersion;
 	return projectVersion;
 }
 
@@ -99,8 +99,8 @@ export function find_project_file(start: string, depth = 20) {
 	// This function appears to be fast enough, but if speed is ever an issue,
 	// memoizing the result should be straightforward
 	if (start === ".") {
-		if (fs.existsSync("project.godot") && fs.statSync("project.godot").isFile()) {
-			return "project.godot";
+		if (fs.existsSync("project.tekisasu") && fs.statSync("project.tekisasu").isFile()) {
+			return "project.tekisasu";
 		}
 		return null;
 	}
@@ -108,7 +108,7 @@ export function find_project_file(start: string, depth = 20) {
 	if (start === folder) {
 		return null;
 	}
-	const projFile = path.join(folder, "project.godot");
+	const projFile = path.join(folder, "project.tekisasu");
 
 	if (fs.existsSync(projFile) && fs.statSync(projFile).isFile()) {
 		return projFile;
@@ -201,48 +201,48 @@ export async function convert_uid_to_uri(uid: string): Promise<vscode.Uri | unde
 export type VERIFY_STATUS = "SUCCESS" | "WRONG_VERSION" | "INVALID_EXE";
 export type VERIFY_RESULT = {
 	status: VERIFY_STATUS;
-	godotPath: string;
+	tekisasuPath: string;
 	version?: string;
 };
 
-export function verify_godot_version(godotPath: string, expectedVersion: "3" | "4" | string): VERIFY_RESULT {
-	let target = clean_godot_path(godotPath);
+export function verify_tekisasu_version(tekisasuPath: string, expectedVersion: "3" | "4" | string): VERIFY_RESULT {
+	let target = clean_tekisasu_path(tekisasuPath);
 
 	let output = "";
 	try {
 		output = execSync(`"${target}" --version`).toString().trim();
 	} catch {
 		if (path.isAbsolute(target)) {
-			return { status: "INVALID_EXE", godotPath: target };
+			return { status: "INVALID_EXE", tekisasuPath: target };
 		}
 		const workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
 		target = path.resolve(workspacePath, target);
 		try {
 			output = execSync(`"${target}" --version`).toString().trim();
 		} catch {
-			return { status: "INVALID_EXE", godotPath: target };
+			return { status: "INVALID_EXE", tekisasuPath: target };
 		}
 	}
 
 	const pattern = /^(([34])\.([0-9]+)(?:\.[0-9]+)?)/m;
 	const match = output.match(pattern);
 	if (!match) {
-		return { status: "INVALID_EXE", godotPath: target };
+		return { status: "INVALID_EXE", tekisasuPath: target };
 	}
 	if (match[2] !== expectedVersion) {
-		return { status: "WRONG_VERSION", godotPath: target, version: match[1] };
+		return { status: "WRONG_VERSION", tekisasuPath: target, version: match[1] };
 	}
-	return { status: "SUCCESS", godotPath: target, version: match[1] };
+	return { status: "SUCCESS", tekisasuPath: target, version: match[1] };
 }
 
-export function clean_godot_path(godotPath: string): string {
-	let pathToClean = godotPath;
+export function clean_tekisasu_path(tekisasuPath: string): string {
+	let pathToClean = tekisasuPath;
 
 	// check for environment variable syntax
 	// looking for: ${env:FOOBAR}
 	// extracts "FOOBAR"
 	const pattern = /\$\{env:(.+?)\}/;
-	const match = godotPath.match(pattern);
+	const match = tekisasuPath.match(pattern);
 
 	if (match && match.length >= 2)	{
 		pathToClean = process.env[match[1]];
@@ -253,7 +253,7 @@ export function clean_godot_path(godotPath: string): string {
 
 	// try to fix macos paths
 	if (os.platform() === "darwin" && target.endsWith(".app")) {
-		target = path.join(target, "Contents", "MacOS", "Godot");
+		target = path.join(target, "Contents", "MacOS", "Tekisasu");
 	}
 
 	return target;

@@ -33,7 +33,7 @@
 			"args": [
 				"--profile=temp",
 				"--extensionDevelopmentPath=${workspaceFolder}",
-				"${workspaceFolder}/test_projects/test-dap-project-godot4"
+				"${workspaceFolder}/test_projects/test-dap-project-tekisasu4"
 			],
 			"outFiles": [
 				"${workspaceFolder}/out/**/*.js"

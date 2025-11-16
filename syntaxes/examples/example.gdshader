@@ -37,13 +37,13 @@ instance uniform int qualifier_c;
 varying flat int qualifier_d;
 
 // hints
-uniform sampler2D hint_a : hint_albedo; // godot 3
-uniform sampler2D hint_b : source_color; // godot 4
+uniform sampler2D hint_a : hint_albedo; // tekisasu 3
+uniform sampler2D hint_b : source_color; // tekisasu 4
 
-uniform sampler2D hint_c : hint_black; // godot 3
-uniform sampler2D hint_d : hint_white; // godot 3
-uniform sampler2D hint_e : hint_default_black; // godot 4
-uniform sampler2D hint_f : hint_default_white; // godot 4
+uniform sampler2D hint_c : hint_black; // tekisasu 3
+uniform sampler2D hint_d : hint_white; // tekisasu 3
+uniform sampler2D hint_e : hint_default_black; // tekisasu 4
+uniform sampler2D hint_f : hint_default_white; // tekisasu 4
 
 uniform sampler2D hint_g : hint_aniso;
 
@@ -54,7 +54,7 @@ uniform vec4 hint_o : hint_color = vec4(1.0);
 /* ************************************************************************** */
 
 // the remaining examples are copied directly from 
-// https://docs.godotengine.org/en/3.0/tutorials/shading/shading_language.html
+// https://docs.tekisasuengine.org/en/3.0/tutorials/shading/shading_language.html
 
 float a = 2; // valid
 float a = 2.0; // valid

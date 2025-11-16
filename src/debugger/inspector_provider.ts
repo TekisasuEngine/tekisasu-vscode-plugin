@@ -1,5 +1,5 @@
 import { EventEmitter, TreeDataProvider, TreeItem, TreeItemCollapsibleState, TreeView, window } from "vscode";
-import { GodotVariable, ObjectId, RawObject } from "./debug_runtime";
+import { TekisasuVariable, ObjectId, RawObject } from "./debug_runtime";
 
 export class InspectorProvider implements TreeDataProvider<RemoteProperty> {
 	private changeTreeEvent = new EventEmitter<RemoteProperty>();
@@ -9,7 +9,7 @@ export class InspectorProvider implements TreeDataProvider<RemoteProperty> {
 	public view: TreeView<RemoteProperty>;
 
 	constructor() {
-		this.view = window.createTreeView("godotTools.nodeInspector", {
+		this.view = window.createTreeView("tekisasuTools.nodeInspector", {
 			treeDataProvider: this,
 		});
 	}
@@ -24,7 +24,7 @@ export class InspectorProvider implements TreeDataProvider<RemoteProperty> {
 		}
 	}
 
-	public fill_tree(element_name: string, class_name: string, object_id: number, variable: GodotVariable) {
+	public fill_tree(element_name: string, class_name: string, object_id: number, variable: TekisasuVariable) {
 		this.root = this.parse_variable(variable, object_id);
 		this.root.label = element_name;
 		this.root.collapsibleState = TreeItemCollapsibleState.Expanded;
@@ -76,7 +76,7 @@ export class InspectorProvider implements TreeDataProvider<RemoteProperty> {
 		return this.root !== undefined;
 	}
 
-	private parse_variable(va: GodotVariable, object_id?: number): RemoteProperty {
+	private parse_variable(va: TekisasuVariable, object_id?: number): RemoteProperty {
 		const value = va.value;
 		let rendered_value = "";
 

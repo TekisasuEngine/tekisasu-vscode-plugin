@@ -40,7 +40,7 @@ export class GDDocumentDropEditProvider implements DocumentDropEditProvider {
 
 		const targetResPath = await convert_uri_to_resource_path(document.uri);
 
-		const originFsPath = dataTransfer.get("godot/scene").value;
+		const originFsPath = dataTransfer.get("tekisasu/scene").value;
 		const originUri = vscode.Uri.file(originFsPath);
 
 		const originDocument = await vscode.workspace.openTextDocument(originUri);
@@ -69,12 +69,12 @@ export class GDDocumentDropEditProvider implements DocumentDropEditProvider {
 			nodePathOfTarget = find_node();
 		}
 
-		const className: string = dataTransfer.get("godot/class")?.value;
+		const className: string = dataTransfer.get("tekisasu/class")?.value;
 		if (className) {
-			const nodePath: string = dataTransfer.get("godot/path")?.value;
-			let relativePath: string = dataTransfer.get("godot/relativePath")?.value;
-			const unique = dataTransfer.get("godot/unique")?.value === "true";
-			const label: string = dataTransfer.get("godot/label")?.value;
+			const nodePath: string = dataTransfer.get("tekisasu/path")?.value;
+			let relativePath: string = dataTransfer.get("tekisasu/relativePath")?.value;
+			const unique = dataTransfer.get("tekisasu/unique")?.value === "true";
+			const label: string = dataTransfer.get("tekisasu/label")?.value;
 
 			if (nodePathOfTarget) {
 				const targetPath = path.normalize(path.relative(nodePathOfTarget?.path, nodePath));

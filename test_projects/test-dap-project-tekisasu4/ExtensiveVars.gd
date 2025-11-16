@@ -33,8 +33,8 @@ func _ready() -> void:
   var str_var := "ExtensiveVars::_ready::local::str_var"
 
   # Circular reference.
-  # Note: that causes the godot engine to omit this variable, since stack_frame_var cannot be completed and sent
-  # https://github.com/godotengine/godot/issues/76019
+  # Note: that causes the tekisasu engine to omit this variable, since stack_frame_var cannot be completed and sent
+  # https://github.com/tekisasuengine/tekisasu/issues/76019
   # var dict = {}
   # dict["self_ref"] = dict
   

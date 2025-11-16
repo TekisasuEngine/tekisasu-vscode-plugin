@@ -1,4 +1,4 @@
-import { GodotVariable } from "../debug_runtime";
+import { TekisasuVariable } from "../debug_runtime";
 import { SceneNode } from "../scene_tree_provider";
 import { ObjectId } from "./variables/variants";
 
@@ -32,13 +32,13 @@ export function split_buffers(buffer: Buffer) {
 	return buffers;
 }
 
-export function get_sub_values(value: any): GodotVariable[] {
-	let subValues: GodotVariable[] = undefined;
+export function get_sub_values(value: any): TekisasuVariable[] {
+	let subValues: TekisasuVariable[] = undefined;
 
 	if (value) {
 		if (Array.isArray(value)) {
 			subValues = value.map((va, i) => {
-				return { name: `${i}`, value: va } as GodotVariable;
+				return { name: `${i}`, value: va } as TekisasuVariable;
 			});
 		} else if (value instanceof Map) {
 			subValues = [];
@@ -47,12 +47,12 @@ export function get_sub_values(value: any): GodotVariable[] {
 					typeof key.stringify_value === "function"
 						? `${key.type_name()}${key.stringify_value()}`
 						: `${key}`;
-				const godot_id = val instanceof ObjectId ? val.id : undefined;
-				subValues.push({ id: godot_id, name, value: val } as GodotVariable);
+				const tekisasu_id = val instanceof ObjectId ? val.id : undefined;
+				subValues.push({ id: tekisasu_id, name, value: val } as TekisasuVariable);
 			}
 		} else if (typeof value.sub_values === "function") {
 			subValues = value.sub_values()?.map((sva) => {
-				return { name: sva.name, value: sva.value } as GodotVariable;
+				return { name: sva.name, value: sva.value } as TekisasuVariable;
 			});
 		}
 	}

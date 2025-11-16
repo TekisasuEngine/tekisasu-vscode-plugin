@@ -2,7 +2,7 @@ import * as path from "node:path";
 import { EventEmitter, TreeDataProvider, TreeItem, TreeItemCollapsibleState, TreeView, Uri, window } from "vscode";
 import { get_extension_uri } from "../utils";
 
-const iconDir = get_extension_uri("resources", "godot_icons").fsPath;
+const iconDir = get_extension_uri("resources", "tekisasu_icons").fsPath;
 
 export class SceneTreeProvider implements TreeDataProvider<SceneNode> {
 	private changeTreeEvent = new EventEmitter<SceneNode>();
@@ -12,7 +12,7 @@ export class SceneTreeProvider implements TreeDataProvider<SceneNode> {
 	public view: TreeView<SceneNode>;
 
 	constructor() {
-		this.view = window.createTreeView("godotTools.activeSceneTree", {
+		this.view = window.createTreeView("tekisasuTools.activeSceneTree", {
 			treeDataProvider: this,
 		});
 	}

@@ -12,19 +12,19 @@ import {
 	get_configuration,
 	get_free_port,
 	get_project_version,
-	verify_godot_version,
+	verify_tekisasu_version,
 } from "../../utils";
-import { prompt_for_godot_executable } from "../../utils/prompts";
+import { prompt_for_tekisasu_executable } from "../../utils/prompts";
 import { killSubProcesses, subProcess } from "../../utils/subspawn";
-import { GodotStackFrame, GodotVariable } from "../debug_runtime";
+import { TekisasuStackFrame, TekisasuVariable } from "../debug_runtime";
 import { AttachRequestArguments, LaunchRequestArguments, pinnedScene } from "../debugger";
-import { GodotDebugSession } from "./debug_session";
+import { TekisasuDebugSession } from "./debug_session";
 import { get_sub_values, parse_next_scene_node, split_buffers } from "./helpers";
 import { VariantDecoder } from "./variables/variant_decoder";
 import { VariantEncoder } from "./variables/variant_encoder";
 import { RawObject } from "./variables/variants";
 
-const log = createLogger("debugger.controller", { output: "Godot Debugger" });
+const log = createLogger("debugger.controller", { output: "Tekisasu Debugger" });
 const socketLog = createLogger("debugger.socket");
 //initialize bbcodeParser and set default output color to grey
 const bbcodeParser = new BBCodeToAnsi("\u001b[38;2;211;211;211m");
@@ -37,10 +37,10 @@ class Command {
 	public threadId = 0;
 }
 
-class GodotPartialStackVars {
-	Locals: GodotVariable[] = [];
-	Members: GodotVariable[] = [];
-	Globals: GodotVariable[] = [];
+class TekisasuPartialStackVars {
+	Locals: TekisasuVariable[] = [];
+	Members: TekisasuVariable[] = [];
+	Globals: TekisasuVariable[] = [];
 	public remaining: number;
 	public stack_frame_id: number;
 	constructor(stack_frame_id: number) {
@@ -54,12 +54,12 @@ class GodotPartialStackVars {
 		this.Globals = [];
 	}
 
-	public append(name: string, godotScopeIndex: 0 | 1 | 2, type: number, value: any, sub_values?: GodotVariable[]) {
-		const scopeName = ["Locals", "Members", "Globals"][godotScopeIndex];
+	public append(name: string, tekisasuScopeIndex: 0 | 1 | 2, type: number, value: any, sub_values?: TekisasuVariable[]) {
+		const scopeName = ["Locals", "Members", "Globals"][tekisasuScopeIndex];
 		const scope = this[scopeName];
-		// const objectId = value instanceof ObjectId ? value : undefined; // won't work, unless the value is re-created through new ObjectId(godot_id)
-		const godot_id = type === 24 ? value.id : undefined;
-		scope.push({ id: godot_id, name, value, type, sub_values } as GodotVariable);
+		// const objectId = value instanceof ObjectId ? value : undefined; // won't work, unless the value is re-created through new ObjectId(tekisasu_id)
+		const tekisasu_id = type === 24 ? value.id : undefined;
+		scope.push({ id: tekisasu_id, name, value, type, sub_values } as TekisasuVariable);
 		this.remaining--;
 	}
 }
@@ -75,12 +75,12 @@ export class ServerController {
 	private socket?: net.Socket;
 	private steppingOut = false;
 	private didFirstOutput = false;
-	private partialStackVars: GodotPartialStackVars;
+	private partialStackVars: TekisasuPartialStackVars;
 	private projectVersionMajor: number;
 	private projectVersionMinor: number;
 	private projectVersionPoint: number;
 
-	public constructor(public session: GodotDebugSession) {}
+	public constructor(public session: TekisasuDebugSession) {}
 
 	public setProjectVersion(projectVersion: string) {
 		const versionParts = projectVersion.split(".").map(Number);
@@ -137,7 +137,7 @@ export class ServerController {
 				`Partial stack frames have been requested, while existing request hasn't been completed yet.Remaining stack_frames: ${this.partialStackVars.remaining} Current stack_frame_id: ${this.partialStackVars.stack_frame_id} Requested stack_frame_id: ${stack_frame_id}`,
 			);
 		}
-		this.partialStackVars = new GodotPartialStackVars(stack_frame_id);
+		this.partialStackVars = new TekisasuPartialStackVars(stack_frame_id);
 		this.send_command("get_stack_frame_vars", [stack_frame_id]);
 	}
 
@@ -152,27 +152,27 @@ export class ServerController {
 	private async start_game(args: LaunchRequestArguments) {
 		log.info("Starting game process");
 
-		let godotPath: string;
+		let tekisasuPath: string;
 		let result: VERIFY_RESULT;
 		if (args.editor_path) {
 			log.info("Using 'editor_path' variable from launch.json");
 
 			log.info(`Verifying version of '${args.editor_path}'`);
-			result = verify_godot_version(args.editor_path, "4");
-			godotPath = result.godotPath;
+			result = verify_tekisasu_version(args.editor_path, "4");
+			tekisasuPath = result.tekisasuPath;
 			log.info(`Verification result: ${result.status}, version: "${result.version}"`);
 
 			switch (result.status) {
 				case "WRONG_VERSION": {
 					const projectVersion = await get_project_version();
-					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
+					const message = `Cannot launch debug session: The current project uses Tekisasu v${projectVersion}, but the specified Tekisasu executable is v${result.version}`;
 					log.warn(message);
 					window.showErrorMessage(message, "Ok");
 					this.abort();
 					return;
 				}
 				case "INVALID_EXE": {
-					const message = `Cannot launch debug session: '${godotPath}' is not a valid Godot executable`;
+					const message = `Cannot launch debug session: '${tekisasuPath}' is not a valid Tekisasu executable`;
 					log.warn(message);
 					window.showErrorMessage(message, "Ok");
 					this.abort();
@@ -183,29 +183,29 @@ export class ServerController {
 				}
 			}
 		} else {
-			log.info("Using 'editorPath.godot4' from settings");
+			log.info("Using 'editorPath.tekisasu4' from settings");
 
-			const settingName = "editorPath.godot4";
-			godotPath = get_configuration(settingName);
+			const settingName = "editorPath.tekisasu4";
+			tekisasuPath = get_configuration(settingName);
 
-			log.info(`Verifying version of '${godotPath}'`);
-			result = verify_godot_version(godotPath, "4");
-			godotPath = result.godotPath;
+			log.info(`Verifying version of '${tekisasuPath}'`);
+			result = verify_tekisasu_version(tekisasuPath, "4");
+			tekisasuPath = result.tekisasuPath;
 			log.info(`Verification result: ${result.status}, version: "${result.version}"`);
 
 			switch (result.status) {
 				case "WRONG_VERSION": {
 					const projectVersion = await get_project_version();
-					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
+					const message = `Cannot launch debug session: The current project uses Tekisasu v${projectVersion}, but the specified Tekisasu executable is v${result.version}`;
 					log.warn(message);
-					prompt_for_godot_executable(message, settingName);
+					prompt_for_tekisasu_executable(message, settingName);
 					this.abort();
 					return;
 				}
 				case "INVALID_EXE": {
-					const message = `Cannot launch debug session: '${godotPath}' is not a valid Godot executable`;
+					const message = `Cannot launch debug session: '${tekisasuPath}' is not a valid Tekisasu executable`;
 					log.warn(message);
-					prompt_for_godot_executable(message, settingName);
+					prompt_for_tekisasu_executable(message, settingName);
 					this.abort();
 					return;
 				}
@@ -214,7 +214,7 @@ export class ServerController {
 
 		this.setProjectVersion(result.version);
 
-		let command = `"${godotPath}" --path "${args.project}"`;
+		let command = `"${tekisasuPath}" --path "${args.project}"`;
 		const address = args.address.replace("tcp://", "");
 		command += ` --remote-debug "tcp://${address}:${args.port}"`;
 
@@ -426,14 +426,14 @@ export class ServerController {
 				break;
 			}
 			case "scene:inspect_object": {
-				let godot_id = BigInt(command.parameters[0]);
+				let tekisasu_id = BigInt(command.parameters[0]);
 				const className: string = command.parameters[1];
 				const properties: string[] = command.parameters[2];
 
 				// message:inspect_object returns the id as an unsigned 64 bit integer, but it is decoded as a signed 64 bit integer,
 				// thus we need to convert it to its equivalent unsigned value here.
-				if (godot_id < 0) {
-					godot_id = godot_id + BigInt(2) ** BigInt(64);
+				if (tekisasu_id < 0) {
+					tekisasu_id = tekisasu_id + BigInt(2) ** BigInt(64);
 				}
 
 				const rawObject = new RawObject(className);
@@ -447,17 +447,17 @@ export class ServerController {
 				// 1. the DA may have sent the "inspect_object" message
 				// 2. the vscode hit "continue"
 				// 3. new breakpoint hit, DebuggerStop2 happens
-				// 4. the godot server will return response for `1.` with "scene:inspect_object"
+				// 4. the tekisasu server will return response for `1.` with "scene:inspect_object"
 				// at this moment there is no way to tell if "scene:inspect_object" is for DebuggerStop1 or DebuggerStop2
 				try {
-					this.session.variables_manager?.resolve_variable(godot_id, className, sub_values);
+					this.session.variables_manager?.resolve_variable(tekisasu_id, className, sub_values);
 				} catch (error) {
 					log.error("Race condition error error in scene:inspect_object", error);
 				}
 				break;
 			}
 			case "stack_dump": {
-				const frames: GodotStackFrame[] = [];
+				const frames: TekisasuStackFrame[] = [];
 
 				for (let i = 1; i < command.parameters.length; i += 3) {
 					frames.push({
@@ -476,7 +476,7 @@ export class ServerController {
 				/** first response to {@link request_stack_frame_vars} */
 				if (this.partialStackVars !== undefined) {
 					log.warn(
-						"'stack_frame_vars' received again from godot engine before all partial 'stack_frame_var' are received",
+						"'stack_frame_vars' received again from tekisasu engine before all partial 'stack_frame_var' are received",
 					);
 				}
 				const remaining = command.parameters[0];
@@ -514,27 +514,27 @@ export class ServerController {
 				const scope: 0 | 1 | 2 = command.parameters[1]; // 0 = locals, 1 = members, 2 = globals
 				const type: number = command.parameters[2];
 				const value: any = command.parameters[3];
-				const subValues: GodotVariable[] = get_sub_values(value);
+				const subValues: TekisasuVariable[] = get_sub_values(value);
 				this.partialStackVars.append(name, scope, type, value, subValues);
 
 				if (this.partialStackVars.remaining === 0) {
 					const stackVars = this.partialStackVars;
 					this.partialStackVars = undefined;
 					log.info("All partial 'stack_frame_var' are received.");
-					// godot server doesn't send the frame_id for the stack_vars, assume the remembered stack_frame_id:
+					// tekisasu server doesn't send the frame_id for the stack_vars, assume the remembered stack_frame_id:
 					const frame_id = BigInt(stackVars.stack_frame_id);
-					const local_scopes_godot_id = -frame_id * 3n - 1n;
-					const member_scopes_godot_id = -frame_id * 3n - 2n;
-					const global_scopes_godot_id = -frame_id * 3n - 3n;
+					const local_scopes_tekisasu_id = -frame_id * 3n - 1n;
+					const member_scopes_tekisasu_id = -frame_id * 3n - 2n;
+					const global_scopes_tekisasu_id = -frame_id * 3n - 3n;
 
-					this.session.variables_manager.resolve_variable(local_scopes_godot_id, "Locals", stackVars.Locals);
+					this.session.variables_manager.resolve_variable(local_scopes_tekisasu_id, "Locals", stackVars.Locals);
 					this.session.variables_manager.resolve_variable(
-						member_scopes_godot_id,
+						member_scopes_tekisasu_id,
 						"Members",
 						stackVars.Members,
 					);
 					this.session.variables_manager.resolve_variable(
-						global_scopes_godot_id,
+						global_scopes_tekisasu_id,
 						"Globals",
 						stackVars.Globals,
 					);
@@ -666,7 +666,7 @@ export class ServerController {
 		});
 	}
 
-	public trigger_breakpoint(stackFrames: GodotStackFrame[]) {
+	public trigger_breakpoint(stackFrames: TekisasuStackFrame[]) {
 		let continueStepping = false;
 		const stackCount = stackFrames.length;
 		if (stackCount === 0) {

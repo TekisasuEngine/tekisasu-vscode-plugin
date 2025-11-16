@@ -28,8 +28,8 @@ function replace_colors(colors: object, data: string) {
 
 const iconsPath = "editor/icons";
 const modulesPath = "modules";
-const outputPath = "resources/godot_icons";
-const godotPath = process.argv[2];
+const outputPath = "resources/tekisasu_icons";
+const tekisasuPath = process.argv[2];
 
 async function exec(command) {
 	const { stdout, stderr } = await _exec(command);
@@ -202,29 +202,29 @@ function ensure_paths() {
 }
 
 async function run() {
-	if (godotPath == undefined) {
-		console.log("Please provide the absolute path to your godot repo");
+	if (tekisasuPath == undefined) {
+		console.log("Please provide the absolute path to your tekisasu repo");
 		return;
 	}
 
 	const original_cwd = process.cwd();
 
-	process.chdir(godotPath);
+	process.chdir(tekisasuPath);
 
 	const diff = (await exec(git.diff)).trim();
 	if (diff) {
-		console.log("There appear to be uncommitted changes in your godot repo");
+		console.log("There appear to be uncommitted changes in your tekisasu repo");
 		console.log("Revert or stash these changes and try again");
 		return;
 	}
 
 	const branch = (await exec(git.check_branch)).trim();
 
-	console.log("Gathering Godot 3 icons...");
+	console.log("Gathering Tekisasu 3 icons...");
 	await exec(git.checkout_3);
 	const g3 = get_icons();
 
-	console.log("Gathering Godot 4 icons...");
+	console.log("Gathering Tekisasu 4 icons...");
 	await exec(git.checkout_4);
 	const g4 = get_icons();
 

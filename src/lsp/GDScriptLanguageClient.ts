@@ -15,7 +15,7 @@ import { globals } from "../extension";
 import { createLogger, get_configuration, get_project_dir } from "../utils";
 import { MessageIO } from "./MessageIO";
 
-const log = createLogger("lsp.client", { output: "Godot LSP" });
+const log = createLogger("lsp.client", { output: "Tekisasu LSP" });
 
 export enum ClientStatus {
 	PENDING = 0,
@@ -211,7 +211,7 @@ export default class GDScriptLanguageClient extends LanguageClient {
 			return false;
 		}
 		if (message.method === "workspace/symbol") {
-			// Fixed on server side since Godot 4.5
+			// Fixed on server side since Tekisasu 4.5
 			return false;
 		}
 
@@ -252,7 +252,7 @@ export default class GDScriptLanguageClient extends LanguageClient {
 			}
 
 			const final_result: DocumentLinkResult[] = [];
-			// at this point, Godot's LSP server does not
+			// at this point, Tekisasu's LSP server does not
 			// return a valid path for resources identified
 			// by "uid://""
 			//

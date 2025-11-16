@@ -5,26 +5,26 @@ import { SceneTreeProvider } from "./scene_tree_provider";
 
 const log = createLogger("debugger.runtime");
 
-export interface GodotBreakpoint {
+export interface TekisasuBreakpoint {
 	file: string;
 	id: number;
 	line: number;
 }
 
-export interface GodotStackFrame {
+export interface TekisasuStackFrame {
 	file: string;
 	function: string;
 	id: number;
 	line: number;
 }
 
-export class GodotStackVars {
+export class TekisasuStackVars {
 	public remaining = 0;
 
 	constructor(
-		public locals: GodotVariable[] = [],
-		public members: GodotVariable[] = [],
-		public globals: GodotVariable[] = [],
+		public locals: TekisasuVariable[] = [],
+		public members: TekisasuVariable[] = [],
+		public globals: TekisasuVariable[] = [],
 	) {}
 
 	public reset(count = 0) {
@@ -34,17 +34,17 @@ export class GodotStackVars {
 		this.remaining = count;
 	}
 
-	public forEach(callbackfn: (value: GodotVariable, index: number, array: GodotVariable[]) => void, thisArg?: any) {
+	public forEach(callbackfn: (value: TekisasuVariable, index: number, array: TekisasuVariable[]) => void, thisArg?: any) {
 		this.locals.forEach(callbackfn);
 		this.members.forEach(callbackfn);
 		this.globals.forEach(callbackfn);
 	}
 }
 
-export interface GodotVariable {
+export interface TekisasuVariable {
 	name: string;
 	scope_path?: string;
-	sub_values?: GodotVariable[];
+	sub_values?: TekisasuVariable[];
 	value: any;
 	type?: number;
 	id?: bigint;
@@ -52,7 +52,7 @@ export interface GodotVariable {
 
 export interface GDObject {
 	stringify_value(): string;
-	sub_values(): GodotVariable[];
+	sub_values(): TekisasuVariable[];
 	type_name(): string;
 }
 
@@ -69,7 +69,7 @@ export class ObjectId implements GDObject {
 		return `<${this.id}>`;
 	}
 
-	public sub_values(): GodotVariable[] {
+	public sub_values(): TekisasuVariable[] {
 		return [{ name: "id", value: this.id }];
 	}
 
@@ -78,12 +78,12 @@ export class ObjectId implements GDObject {
 	}
 }
 
-export class GodotDebugData {
+export class TekisasuDebugData {
 	private breakpoint_id = 0;
-	private breakpoints: Map<string, GodotBreakpoint[]> = new Map();
+	private breakpoints: Map<string, TekisasuBreakpoint[]> = new Map();
 
-	public last_frame: GodotStackFrame;
-	public last_frames: GodotStackFrame[] = [];
+	public last_frame: TekisasuStackFrame;
+	public last_frames: TekisasuStackFrame[] = [];
 	public projectPath: string;
 	public scene_tree?: SceneTreeProvider;
 	public stack_count = 0;
@@ -101,7 +101,7 @@ export class GodotDebugData {
 			id: this.breakpoint_id++,
 		};
 
-		let bps: GodotBreakpoint[] = this.breakpoints.get(bp.file);
+		let bps: TekisasuBreakpoint[] = this.breakpoints.get(bp.file);
 		if (!bps) {
 			bps = [];
 			this.breakpoints.set(bp.file, bps);
@@ -132,8 +132,8 @@ export class GodotDebugData {
 		}
 	}
 
-	public get_all_breakpoints(): GodotBreakpoint[] {
-		const output: GodotBreakpoint[] = [];
+	public get_all_breakpoints(): TekisasuBreakpoint[] {
+		const output: TekisasuBreakpoint[] = [];
 		for (const bp_array of Array.from(this.breakpoints.values())) {
 			output.push(...bp_array);
 		}

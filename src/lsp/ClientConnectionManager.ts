@@ -9,14 +9,14 @@ import {
 	register_command,
 	set_configuration,
 	set_context,
-	verify_godot_version,
+	verify_tekisasu_version,
 } from "../utils";
-import { prompt_for_godot_executable, prompt_for_reload, select_godot_executable } from "../utils/prompts";
+import { prompt_for_tekisasu_executable, prompt_for_reload, select_tekisasu_executable } from "../utils/prompts";
 import { killSubProcesses, subProcess } from "../utils/subspawn";
 import GDScriptLanguageClient, { ClientStatus, TargetLSP } from "./GDScriptLanguageClient";
 import { EventEmitter } from "vscode";
 
-const log = createLogger("lsp.manager", { output: "Godot LSP" });
+const log = createLogger("lsp.manager", { output: "Tekisasu LSP" });
 
 export enum ManagerStatus {
 	INITIALIZING = 0,
@@ -53,7 +53,7 @@ export class ClientConnectionManager {
 		set_context("connectedToLSP", false);
 
 		this.statusWidget = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-		this.statusWidget.command = "godotTools.checkStatus";
+		this.statusWidget.command = "tekisasuTools.checkStatus";
 		this.statusWidget.show();
 		this.update_status_widget();
 
@@ -104,7 +104,7 @@ export class ClientConnectionManager {
 
 		const projectDir = await get_project_dir();
 		if (!projectDir) {
-			vscode.window.showErrorMessage("Current workspace is not a Godot project");
+			vscode.window.showErrorMessage("Current workspace is not a Tekisasu project");
 			return;
 		}
 
@@ -115,33 +115,33 @@ export class ClientConnectionManager {
 			minimumVersion = "2";
 			targetVersion = "4.2";
 		}
-		const settingName = `editorPath.godot${projectVersion[0]}`;
-		let godotPath = get_configuration(settingName);
+		const settingName = `editorPath.tekisasu${projectVersion[0]}`;
+		let tekisasuPath = get_configuration(settingName);
 
-		const result = verify_godot_version(godotPath, projectVersion[0]);
-		godotPath = result.godotPath;
+		const result = verify_tekisasu_version(tekisasuPath, projectVersion[0]);
+		tekisasuPath = result.tekisasuPath;
 
 		switch (result.status) {
 			case "WRONG_VERSION": {
-				const message = `Cannot launch headless LSP: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
-				prompt_for_godot_executable(message, settingName);
+				const message = `Cannot launch headless LSP: The current project uses Tekisasu v${projectVersion}, but the specified Tekisasu executable is v${result.version}`;
+				prompt_for_tekisasu_executable(message, settingName);
 				return;
 			}
 			case "INVALID_EXE": {
-				const message = `Cannot launch headless LSP: '${godotPath}' is not a valid Godot executable`;
-				prompt_for_godot_executable(message, settingName);
+				const message = `Cannot launch headless LSP: '${tekisasuPath}' is not a valid Tekisasu executable`;
+				prompt_for_tekisasu_executable(message, settingName);
 				return;
 			}
 		}
 		this.connectedVersion = result.version;
 
 		if (result.version[2] < minimumVersion) {
-			const message = `Cannot launch headless LSP: Headless LSP mode is only available on v${targetVersion} or newer, but the specified Godot executable is v${result.version}.`;
+			const message = `Cannot launch headless LSP: Headless LSP mode is only available on v${targetVersion} or newer, but the specified Tekisasu executable is v${result.version}.`;
 			vscode.window
-				.showErrorMessage(message, "Select Godot executable", "Open Settings", "Disable Headless LSP", "Ignore")
+				.showErrorMessage(message, "Select Tekisasu executable", "Open Settings", "Disable Headless LSP", "Ignore")
 				.then((item) => {
-					if (item === "Select Godot executable") {
-						select_godot_executable(settingName);
+					if (item === "Select Tekisasu executable") {
+						select_tekisasu_executable(settingName);
 					} else if (item === "Open Settings") {
 						vscode.commands.executeCommand("workbench.action.openSettings", settingName);
 					} else if (item === "Disable Headless LSP") {
@@ -157,7 +157,7 @@ export class ClientConnectionManager {
 		log.info(`starting headless LSP on port ${this.client.port}`);
 
 		const headlessFlags = "--headless --no-window";
-		const command = `"${godotPath}" --path "${projectDir}" --editor ${headlessFlags} --lsp-port ${this.client.port}`;
+		const command = `"${tekisasuPath}" --path "${projectDir}" --editor ${headlessFlags} --lsp-port ${this.client.port}`;
 		const lspProcess = subProcess("LSP", command, { shell: true, detached: true });
 
 		const lspStdout = createLogger("lsp.stdout");
@@ -254,7 +254,7 @@ export class ClientConnectionManager {
 				text = "$(check) Connected";
 				tooltip = `Connected to the GDScript language server.\n${lspTarget}`;
 				if (this.connectedVersion) {
-					tooltip += `\nGodot version: ${this.connectedVersion}`;
+					tooltip += `\nTekisasu version: ${this.connectedVersion}`;
 				}
 				break;
 			case ManagerStatus.DISCONNECTED:
@@ -344,19 +344,19 @@ export class ClientConnectionManager {
 
 	private show_retrying_prompt() {
 		const lspTarget = this.get_lsp_connection_string();
-		const message = `Couldn't connect to the GDScript language server at ${lspTarget}. Is the Godot editor or language server running?`;
+		const message = `Couldn't connect to the GDScript language server at ${lspTarget}. Is the Tekisasu editor or language server running?`;
 
 		let options = ["Retry", "Ignore"];
 		if (this.target === TargetLSP.EDITOR) {
-			options = ["Open workspace with Godot Editor", ...options];
+			options = ["Open workspace with Tekisasu Editor", ...options];
 		}
 
 		vscode.window.showErrorMessage(message, ...options).then((item) => {
 			if (item === "Retry") {
 				this.connect_to_language_server();
 			}
-			if (item === "Open workspace with Godot Editor") {
-				vscode.commands.executeCommand("godotTools.openEditor");
+			if (item === "Open workspace with Tekisasu Editor") {
+				vscode.commands.executeCommand("tekisasuTools.openEditor");
 				this.connect_to_language_server();
 			}
 		});

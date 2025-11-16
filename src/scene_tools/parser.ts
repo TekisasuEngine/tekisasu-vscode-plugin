@@ -128,7 +128,7 @@ export class SceneParser {
 			node.text = match[0];
 			node.position = match.index;
 			node.resourceUri = Uri.from({
-				scheme: "godot",
+				scheme: "tekisasu",
 				path: _path,
 			});
 			scene.nodes.set(_path, node);

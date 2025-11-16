@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as vscode from "vscode";
-import { attemptSettingsUpdate, get_extension_uri, clean_godot_path } from "./utils";
+import { attemptSettingsUpdate, get_extension_uri, clean_tekisasu_path } from "./utils";
 import {
 	GDInlayHintsProvider,
 	GDHoverProvider,
@@ -15,7 +15,7 @@ import {
 } from "./providers";
 import { ClientConnectionManager } from "./lsp";
 import { ScenePreviewProvider } from "./scene_tools";
-import { GodotDebugger } from "./debugger";
+import { TekisasuDebugger } from "./debugger";
 import { FormattingProvider } from "./formatter";
 import {
 	get_configuration,
@@ -26,16 +26,16 @@ import {
 	get_editor_data_dir,
 	get_project_dir,
 	get_project_version,
-	verify_godot_version,
+	verify_tekisasu_version,
 	convert_uri_to_resource_path,
 } from "./utils";
-import { prompt_for_godot_executable } from "./utils/prompts";
+import { prompt_for_tekisasu_executable } from "./utils/prompts";
 import { killSubProcesses, subProcess } from "./utils/subspawn";
 
 interface Extension {
 	context?: vscode.ExtensionContext;
 	lsp?: ClientConnectionManager;
-	debug?: GodotDebugger;
+	debug?: TekisasuDebugger;
 	scenePreviewProvider?: ScenePreviewProvider;
 	linkProvider?: GDDocumentLinkProvider;
 	dropsProvider?: GDDocumentDropEditProvider;
@@ -56,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	globals.context = context;
 	globals.lsp = new ClientConnectionManager(context);
-	globals.debug = new GodotDebugger(context);
+	globals.debug = new TekisasuDebugger(context);
 	globals.scenePreviewProvider = new ScenePreviewProvider(context);
 	globals.linkProvider = new GDDocumentLinkProvider(context);
 	globals.dropsProvider = new GDDocumentDropEditProvider(context);
@@ -71,14 +71,14 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		register_command("openEditor", open_workspace_with_editor),
-		register_command("openEditorSettings", open_godot_editor_settings),
+		register_command("openEditorSettings", open_tekisasu_editor_settings),
 		register_command("copyResourcePath", copy_resource_path),
-		register_command("listGodotClasses", list_classes),
+		register_command("listTekisasuClasses", list_classes),
 		register_command("switchSceneScript", switch_scene_script),
-		register_command("getGodotPath", get_godot_path),
+		register_command("getTekisasuPath", get_tekisasu_path),
 	);
 
-	set_context("godotFiles", ["gdscript", "gdscene", "gdresource", "gdshader"]);
+	set_context("tekisasuFiles", ["gdscript", "gdscene", "gdresource", "gdshader"]);
 	set_context("sceneLikeFiles", ["gdscript", "gdscene"]);
 
 	get_project_version().then(async () => {
@@ -92,25 +92,25 @@ async function initial_setup() {
 		// TODO: actually handle this?
 		return;
 	}
-	const settingName = `editorPath.godot${projectVersion[0]}`;
-	const result = verify_godot_version(get_configuration(settingName), projectVersion[0]);
-	const godotPath = result.godotPath;
+	const settingName = `editorPath.tekisasu${projectVersion[0]}`;
+	const result = verify_tekisasu_version(get_configuration(settingName), projectVersion[0]);
+	const tekisasuPath = result.tekisasuPath;
 
 	switch (result.status) {
 		case "SUCCESS": {
 			break;
 		}
 		case "WRONG_VERSION": {
-			const message = `The specified Godot executable, '${godotPath}' is the wrong version. 
-				The current project uses Godot v${projectVersion}, but the specified executable is Godot v${result.version}.
+			const message = `The specified Tekisasu executable, '${tekisasuPath}' is the wrong version. 
+				The current project uses Tekisasu v${projectVersion}, but the specified executable is Tekisasu v${result.version}.
 				Extension features will not work correctly unless this is fixed.`;
-			prompt_for_godot_executable(message, settingName);
+			prompt_for_tekisasu_executable(message, settingName);
 			break;
 		}
 		case "INVALID_EXE": {
-			const message = `The specified Godot executable, '${godotPath}' is invalid. 
+			const message = `The specified Tekisasu executable, '${tekisasuPath}' is invalid. 
 				Extension features will not work correctly unless this is fixed.`;
-			prompt_for_godot_executable(message, settingName);
+			prompt_for_tekisasu_executable(message, settingName);
 			break;
 		}
 	}
@@ -156,24 +156,24 @@ async function open_workspace_with_editor() {
 	const projectDir = await get_project_dir();
 	const projectVersion = await get_project_version();
 
-	const settingName = `editorPath.godot${projectVersion[0]}`;
-	const result = verify_godot_version(get_configuration(settingName), projectVersion[0]);
-	const godotPath = result.godotPath;
+	const settingName = `editorPath.tekisasu${projectVersion[0]}`;
+	const result = verify_tekisasu_version(get_configuration(settingName), projectVersion[0]);
+	const tekisasuPath = result.tekisasuPath;
 
 	switch (result.status) {
 		case "SUCCESS": {
-			let command = `"${godotPath}" --path "${projectDir}" -e`;
+			let command = `"${tekisasuPath}" --path "${projectDir}" -e`;
 			if (get_configuration("editor.verbose")) {
 				command += " -v";
 			}
-			const existingTerminal = vscode.window.terminals.find((t) => t.name === "Godot Editor");
+			const existingTerminal = vscode.window.terminals.find((t) => t.name === "Tekisasu Editor");
 			if (existingTerminal) {
 				existingTerminal.dispose();
 			}
 			const options: vscode.ExtensionTerminalOptions = {
-				name: "Godot Editor",
-				iconPath: get_extension_uri("resources/godot_icon.svg"),
-				pty: new GodotEditorTerminal(command),
+				name: "Tekisasu Editor",
+				iconPath: get_extension_uri("resources/tekisasu_icon.svg"),
+				pty: new TekisasuEditorTerminal(command),
 				isTransient: true,
 			};
 			const terminal = vscode.window.createTerminal(options);
@@ -183,19 +183,19 @@ async function open_workspace_with_editor() {
 			break;
 		}
 		case "WRONG_VERSION": {
-			const message = `Cannot launch Godot editor: The current project uses Godot v${projectVersion}, but the specified Godot executable is version ${result.version}`;
-			prompt_for_godot_executable(message, settingName);
+			const message = `Cannot launch Tekisasu editor: The current project uses Tekisasu v${projectVersion}, but the specified Tekisasu executable is version ${result.version}`;
+			prompt_for_tekisasu_executable(message, settingName);
 			break;
 		}
 		case "INVALID_EXE": {
-			const message = `Cannot launch Godot editor: '${settingName}' value of '${godotPath}' is not a valid Godot executable`;
-			prompt_for_godot_executable(message, settingName);
+			const message = `Cannot launch Tekisasu editor: '${settingName}' value of '${tekisasuPath}' is not a valid Tekisasu executable`;
+			prompt_for_tekisasu_executable(message, settingName);
 			break;
 		}
 	}
 }
 
-async function open_godot_editor_settings() {
+async function open_tekisasu_editor_settings() {
 	const dir = get_editor_data_dir();
 	const files = fs.readdirSync(dir).filter((v) => v.endsWith(".tres"));
 
@@ -229,22 +229,22 @@ async function open_godot_editor_settings() {
 }
 
 /**
- * Returns the executable path for Godot based on the current project's version.
+ * Returns the executable path for Tekisasu based on the current project's version.
  * Created to allow other extensions to get the path without having to go
  * through the steps of determining the version to get the proper configuration
- * value (godotTools.editorPath.godot3/4).
+ * value (tekisasuTools.editorPath.tekisasu3/4).
  * @returns
  */
-async function get_godot_path(): Promise<string | undefined> {
+async function get_tekisasu_path(): Promise<string | undefined> {
 	const projectVersion = await get_project_version();
 	if (projectVersion === undefined) {
 		return undefined;
 	}
-	const settingName = `editorPath.godot${projectVersion[0]}`;
-	return clean_godot_path(get_configuration(settingName));
+	const settingName = `editorPath.tekisasu${projectVersion[0]}`;
+	return clean_tekisasu_path(get_configuration(settingName));
 }
 
-class GodotEditorTerminal implements vscode.Pseudoterminal {
+class TekisasuEditorTerminal implements vscode.Pseudoterminal {
 	private writeEmitter = new vscode.EventEmitter<string>();
 	onDidWrite: vscode.Event<string> = this.writeEmitter.event;
 	private closeEmitter = new vscode.EventEmitter<number>();
@@ -253,8 +253,8 @@ class GodotEditorTerminal implements vscode.Pseudoterminal {
 	constructor(private command: string) {}
 
 	open(initialDimensions: vscode.TerminalDimensions | undefined): void {
-		const proc = subProcess("GodotEditor", this.command, { shell: true, detached: true });
-		this.writeEmitter.fire("Starting Godot Editor process...\r\n");
+		const proc = subProcess("TekisasuEditor", this.command, { shell: true, detached: true });
+		this.writeEmitter.fire("Starting Tekisasu Editor process...\r\n");
 
 		proc.stdout.on("data", (data) => {
 			const out = data.toString().trim();
@@ -271,11 +271,11 @@ class GodotEditorTerminal implements vscode.Pseudoterminal {
 		});
 
 		proc.on("close", (code) => {
-			this.writeEmitter.fire(`Godot Editor stopped with exit code: ${code}\r\n`);
+			this.writeEmitter.fire(`Tekisasu Editor stopped with exit code: ${code}\r\n`);
 		});
 	}
 
 	close(): void {
-		killSubProcesses("GodotEditor");
+		killSubProcesses("TekisasuEditor");
 	}
 }

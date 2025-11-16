@@ -35,7 +35,7 @@
 		},
 		"expression": {
 			"patterns": [
-				{ "include": "#getter_setter_godot4" },
+				{ "include": "#getter_setter_tekisasu4" },
 				{ "include": "#base_expression" },
 				{ "include": "#assignment_operator" },
 				{ "include": "#annotations" },
@@ -327,7 +327,7 @@
 				{ "include": "#keywords" }
 			]
 		},
-		"getter_setter_godot4": {
+		"getter_setter_tekisasu4": {
 			"patterns": [
 				{
 					"name": "meta.variable.declaration.getter.gdscript",

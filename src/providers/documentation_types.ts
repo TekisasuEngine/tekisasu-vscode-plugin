@@ -5,7 +5,7 @@ export interface NativeSymbolInspectParams {
 	symbol_name: string;
 }
 
-export class GodotNativeSymbol implements DocumentSymbol {
+export class TekisasuNativeSymbol implements DocumentSymbol {
 	name: string;
 	detail?: string;
 	kind: SymbolKind;
@@ -16,15 +16,15 @@ export class GodotNativeSymbol implements DocumentSymbol {
 	children?: DocumentSymbol[];
 	documentation: string;
 	native_class: string;
-	class_info?: GodotNativeClassInfo;
+	class_info?: TekisasuNativeClassInfo;
 }
 
-export interface GodotNativeClassInfo {
+export interface TekisasuNativeClassInfo {
 	name: string;
 	inherits: string;
 	extended_classes?: string[];
 }
 
-export interface GodotCapabilities {
-	native_classes: GodotNativeClassInfo[];
+export interface TekisasuCapabilities {
+	native_classes: TekisasuNativeClassInfo[];
 }

@@ -11,7 +11,7 @@ import { DebugProtocol } from "@vscode/debugprotocol";
 import { Subject } from "await-notify";
 import { debug } from "vscode";
 import { createLogger } from "../../utils";
-import { GodotDebugData, GodotStackVars, GodotVariable } from "../debug_runtime";
+import { TekisasuDebugData, TekisasuStackVars, TekisasuVariable } from "../debug_runtime";
 import { AttachRequestArguments, LaunchRequestArguments } from "../debugger";
 import { InspectorProvider } from "../inspector_provider";
 import { SceneTreeProvider } from "../scene_tree_provider";
@@ -19,18 +19,18 @@ import { is_variable_built_in_type, parse_variable } from "./helpers";
 import { ServerController } from "./server_controller";
 import { ObjectId } from "./variables/variants";
 
-const log = createLogger("debugger.session", { output: "Godot Debugger" });
+const log = createLogger("debugger.session", { output: "Tekisasu Debugger" });
 
 interface Variable {
-	variable: GodotVariable;
+	variable: TekisasuVariable;
 	index: number;
 	object_id: number;
 }
 
-export class GodotDebugSession extends LoggingDebugSession {
-	private all_scopes: GodotVariable[];
+export class TekisasuDebugSession extends LoggingDebugSession {
+	private all_scopes: TekisasuVariable[];
 	public controller = new ServerController(this);
-	public debug_data = new GodotDebugData(this);
+	public debug_data = new TekisasuDebugData(this);
 	public sceneTree: SceneTreeProvider;
 	public inspector: InspectorProvider;
 	private got_scope: Subject = new Subject();
@@ -38,7 +38,7 @@ export class GodotDebugSession extends LoggingDebugSession {
 	private previous_inspections: bigint[] = [];
 	private configuration_done: Subject = new Subject();
 	private mode: "launch" | "attach" | "" = "";
-	public inspect_callbacks: Map<bigint, (class_name: string, variable: GodotVariable) => void> = new Map();
+	public inspect_callbacks: Map<bigint, (class_name: string, variable: TekisasuVariable) => void> = new Map();
 
 	public constructor() {
 		super();
@@ -291,7 +291,7 @@ export class GodotDebugSession extends LoggingDebugSession {
 		this.sendResponse(response);
 	}
 
-	public set_scopes(stackVars: GodotStackVars) {
+	public set_scopes(stackVars: TekisasuStackVars) {
 		this.all_scopes = [
 			undefined,
 			{
@@ -337,7 +337,7 @@ export class GodotDebugSession extends LoggingDebugSession {
 		}
 	}
 
-	public set_inspection(id: bigint, replacement: GodotVariable) {
+	public set_inspection(id: bigint, replacement: TekisasuVariable) {
 		const variables = this.all_scopes.filter((va) => va && va.value instanceof ObjectId && va.value.id === id);
 
 		for (const va of variables) {
@@ -379,7 +379,7 @@ export class GodotDebugSession extends LoggingDebugSession {
 
 	protected get_variable(
 		expression: string,
-		root: GodotVariable = null,
+		root: TekisasuVariable = null,
 		index = 0,
 		object_id: number = null,
 	): Variable {
@@ -507,7 +507,7 @@ export class GodotDebugSession extends LoggingDebugSession {
 		return result;
 	}
 
-	private append_variable(variable: GodotVariable, index?: number) {
+	private append_variable(variable: TekisasuVariable, index?: number) {
 		if (index) {
 			this.all_scopes.splice(index, 0, variable);
 		} else {

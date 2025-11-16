@@ -1,15 +1,15 @@
 import * as vscode from "vscode";
 
 const OLD_SETTINGS_CONVERSIONS = [
-	["godot_tools.editor_path", "godotTools.editorPath.godot3"],
-	["godot_tools.editor_path", "godotTools.editorPath.godot4"],
-	["godot_tools.gdscript_lsp_server_protocol", "godotTools.lsp.serverProtocol"],
-	["godot_tools.gdscript_lsp_server_host", "godotTools.lsp.serverHost"],
-	["godot_tools.gdscript_lsp_server_port", "godotTools.lsp.serverPort"],
-	["godot_tools.reconnect_automatically", "godotTools.lsp.autoReconnect.enabled"],
-	["godot_tools.reconnect_cooldown", "godotTools.lsp.autoReconnect.cooldown"],
-	["godot_tools.reconnect_attempts", "godotTools.lsp.autoReconnect.attempts"],
-	["godot_tools.scenePreview.previewRelatedScenes", "godotTools.scenePreview.previewRelatedScenes"]
+	["tekisasu_tools.editor_path", "tekisasuTools.editorPath.tekisasu3"],
+	["tekisasu_tools.editor_path", "tekisasuTools.editorPath.tekisasu4"],
+	["tekisasu_tools.gdscript_lsp_server_protocol", "tekisasuTools.lsp.serverProtocol"],
+	["tekisasu_tools.gdscript_lsp_server_host", "tekisasuTools.lsp.serverHost"],
+	["tekisasu_tools.gdscript_lsp_server_port", "tekisasuTools.lsp.serverPort"],
+	["tekisasu_tools.reconnect_automatically", "tekisasuTools.lsp.autoReconnect.enabled"],
+	["tekisasu_tools.reconnect_cooldown", "tekisasuTools.lsp.autoReconnect.cooldown"],
+	["tekisasu_tools.reconnect_attempts", "tekisasuTools.lsp.autoReconnect.attempts"],
+	["tekisasu_tools.scenePreview.previewRelatedScenes", "tekisasuTools.scenePreview.previewRelatedScenes"]
 ];
 
 export function updateOldStyleSettings() {
@@ -27,7 +27,7 @@ export function updateOldStyleSettings() {
 		// Only show this message if things have actually changed, to prevent users who
 		// are just reinstalling the extension from receiveing it.
 		vscode.window.showInformationMessage(
-			`Settings from godot-tools version <2.0.0 have been updated to the new format.
+			`Settings from tekisasu-tools version <2.0.0 have been updated to the new format.
 			Please view the changelog for version 2.0.0 for more information.`,
 			"Okay"
 		);
