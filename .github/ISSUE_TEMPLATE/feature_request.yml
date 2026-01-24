@@ -1,5 +1,5 @@
 name: Feature request
-description: Request a new feature to be added or improved in Godot Tools VS Code add-on
+description: Request a new feature to be added or improved in Tekisasu Tools VS Code add-on
 labels:
   - enhancement
 body:
@@ -35,7 +35,7 @@ body:
 
 - type: input
   attributes:
-    label: Godot Tools VS Code extension version
+    label: Tekisasu Tools VS Code extension version
     description: >
       Open the **Extensions** side panel and click on the **tekisasu-tools** extension to see your current version.
       Specify the Git commit hash if using a development or non-official build.
@@ -57,7 +57,7 @@ body:
   attributes:
     label: Problem statement
     description: |
-      Describe the problem or limitation you're currently facing with the Godot Tools extension.
+      Describe the problem or limitation you're currently facing with the Tekisasu Tools extension.
   validations:
     required: true
 

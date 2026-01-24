@@ -117,19 +117,19 @@ export class ClientConnectionManager {
 		}
 		// Always use tekisasuEngine setting (assumes Godot 4)
 		const settingName = "editorPath.tekisasuEngine";
-		let godotPath = get_configuration(settingName);
+		let tekisasuPath = get_configuration(settingName);
 
-		const result = verify_godot_version(godotPath, "4");
-		godotPath = result.godotPath;
+		const result = verify_godot_version(tekisasuPath, "4");
+		tekisasuPath = result.tekisasuPath;
 
 		switch (result.status) {
 			case "WRONG_VERSION": {
-				const message = `Cannot launch headless LSP: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
+				const message = `Cannot launch headless LSP: The current project uses TekisasuEngine v${projectVersion}, but the specified TekisasuEngine executable is v${result.version}`;
 				prompt_for_godot_executable(message, settingName);
 				return;
 			}
 			case "INVALID_EXE": {
-				const message = `Cannot launch headless LSP: '${godotPath}' is not a valid Godot executable`;
+				const message = `Cannot launch headless LSP: '${tekisasuPath}' is not a valid TekisasuEngine executable`;
 				prompt_for_godot_executable(message, settingName);
 				return;
 			}
@@ -137,11 +137,11 @@ export class ClientConnectionManager {
 		this.connectedVersion = result.version;
 
 		if (result.version[2] < minimumVersion) {
-			const message = `Cannot launch headless LSP: Headless LSP mode is only available on v${targetVersion} or newer, but the specified Godot executable is v${result.version}.`;
+			const message = `Cannot launch headless LSP: Headless LSP mode is only available on v${targetVersion} or newer, but the specified TekisasuEngine executable is v${result.version}.`;
 			vscode.window
-				.showErrorMessage(message, "Select Godot executable", "Open Settings", "Disable Headless LSP", "Ignore")
+				.showErrorMessage(message, "Select TekisasuEngine executable", "Open Settings", "Disable Headless LSP", "Ignore")
 				.then((item) => {
-					if (item === "Select Godot executable") {
+					if (item === "Select TekisasuEngine executable") {
 						select_godot_executable(settingName);
 					} else if (item === "Open Settings") {
 						vscode.commands.executeCommand("workbench.action.openSettings", settingName);
@@ -158,7 +158,7 @@ export class ClientConnectionManager {
 		log.info(`starting headless LSP on port ${this.client.port}`);
 
 		const headlessFlags = "--headless --no-window";
-		const command = `"${godotPath}" --path "${projectDir}" --editor ${headlessFlags} --lsp-port ${this.client.port}`;
+		const command = `"${tekisasuPath}" --path "${projectDir}" --editor ${headlessFlags} --lsp-port ${this.client.port}`;
 		const lspProcess = subProcess("LSP", command, { shell: true, detached: true });
 
 		const lspStdout = createLogger("lsp.stdout");
@@ -255,7 +255,7 @@ export class ClientConnectionManager {
 				text = "$(check) Connected";
 				tooltip = `Connected to the GDScript language server.\n${lspTarget}`;
 				if (this.connectedVersion) {
-					tooltip += `\nGodot version: ${this.connectedVersion}`;
+					tooltip += `\nTekisasuEngine version: ${this.connectedVersion}`;
 				}
 				break;
 			case ManagerStatus.DISCONNECTED:
@@ -345,7 +345,7 @@ export class ClientConnectionManager {
 
 	private show_retrying_prompt() {
 		const lspTarget = this.get_lsp_connection_string();
-		const message = `Couldn't connect to the GDScript language server at ${lspTarget}. Is the Godot editor or language server running?`;
+		const message = `Couldn't connect to the GDScript language server at ${lspTarget}. Is the TekisasuEngine editor or language server running?`;
 
 		let options = ["Retry", "Ignore"];
 		if (this.target === TargetLSP.EDITOR) {

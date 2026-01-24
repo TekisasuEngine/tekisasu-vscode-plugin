@@ -12,8 +12,8 @@ export function prompt_for_reload() {
 
 export function select_godot_executable(settingName: string) {
 	vscode.window.showOpenDialog({
-		openLabel: "Select Godot executable",
-		filters: process.platform === "win32" ? { "Godot Editor Binary": ["exe", "EXE"] } : undefined
+		openLabel: "Select TekisasuEngine executable",
+		filters: process.platform === "win32" ? { "TekisasuEngine Editor Binary": ["exe", "EXE"] } : undefined
 	}).then(async (uris: vscode.Uri[]) => {
 		if (!uris) {
 			return;
@@ -25,8 +25,8 @@ export function select_godot_executable(settingName: string) {
 }
 
 export function prompt_for_godot_executable(message: string, settingName: string) {
-	vscode.window.showErrorMessage(message, "Select Godot executable", "Open Settings", "Ignore").then(item => {
-		if (item === "Select Godot executable") {
+	vscode.window.showErrorMessage(message, "Select TekisasuEngine executable", "Open Settings", "Ignore").then(item => {
+		if (item === "Select TekisasuEngine executable") {
 			select_godot_executable(settingName);
 		}
 		if (item === "Open Settings") {

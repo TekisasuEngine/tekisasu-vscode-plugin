@@ -110,27 +110,27 @@ export class ServerController {
 	private async start_game(args: LaunchRequestArguments) {
 		log.info("Starting game process");
 
-		let godotPath: string;
+		let tekisasuPath: string;
 		let result: VERIFY_RESULT;
 		if (args.editor_path) {
 			log.info("Using 'editor_path' variable from launch.json");
 
 			log.info(`Verifying version of '${args.editor_path}'`);
 			result = verify_godot_version(args.editor_path, "3");
-			godotPath = result.godotPath;
+			tekisasuPath = result.tekisasuPath;
 			log.info(`Verification result: ${result.status}, version: "${result.version}"`);
 
 			switch (result.status) {
 				case "WRONG_VERSION": {
 					const projectVersion = await get_project_version();
-					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
+					const message = `Cannot launch debug session: The current project uses TekisasuEngine v${projectVersion}, but the specified TekisasuEngine executable is v${result.version}`;
 					log.warn(message);
 					window.showErrorMessage(message, "Ok");
 					this.abort();
 					return;
 				}
 				case "INVALID_EXE": {
-					const message = `Cannot launch debug session: '${godotPath}' is not a valid Godot executable`;
+					const message = `Cannot launch debug session: '${tekisasuPath}' is not a valid TekisasuEngine executable`;
 					log.warn(message);
 					window.showErrorMessage(message, "Ok");
 					this.abort();
@@ -144,24 +144,24 @@ export class ServerController {
 			log.info("Using 'editorPath.godot3' from settings");
 
 			const settingName = "editorPath.godot3";
-			godotPath = get_configuration(settingName);
+			tekisasuPath = get_configuration(settingName);
 
-			log.info(`Verifying version of '${godotPath}'`);
-			result = verify_godot_version(godotPath, "3");
-			godotPath = result.godotPath;
+			log.info(`Verifying version of '${tekisasuPath}'`);
+			result = verify_godot_version(tekisasuPath, "3");
+			tekisasuPath = result.tekisasuPath;
 			log.info(`Verification result: ${result.status}, version: "${result.version}"`);
 
 			switch (result.status) {
 				case "WRONG_VERSION": {
 					const projectVersion = await get_project_version();
-					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
+					const message = `Cannot launch debug session: The current project uses TekisasuEngine v${projectVersion}, but the specified TekisasuEngine executable is v${result.version}`;
 					log.warn(message);
 					prompt_for_godot_executable(message, settingName);
 					this.abort();
 					return;
 				}
 				case "INVALID_EXE": {
-					const message = `Cannot launch debug session: '${godotPath}' is not a valid Godot executable`;
+					const message = `Cannot launch debug session: '${tekisasuPath}' is not a valid TekisasuEngine executable`;
 					log.warn(message);
 					prompt_for_godot_executable(message, settingName);
 					this.abort();
@@ -172,7 +172,7 @@ export class ServerController {
 
 		this.connectedVersion = result.version;
 
-		let command = `"${godotPath}" --path "${args.project}"`;
+		let command = `"${tekisasuPath}" --path "${args.project}"`;
 		const address = args.address.replace("tcp://", "");
 		command += ` --remote-debug "${address}:${args.port}"`;
 
