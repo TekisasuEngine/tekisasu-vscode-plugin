@@ -70,7 +70,7 @@
 - [Fix various formatting issues](https://github.com/godotengine/godot-vscode-plugin/pull/672)
 - [Fix various syntax highlighting issues](https://github.com/godotengine/godot-vscode-plugin/pull/674)
 - [Fix Object ID decoded as wrong signedness](https://github.com/godotengine/godot-vscode-plugin/pull/670)
-- [Fix project not found when `project.godot` file is excluded](https://github.com/godotengine/godot-vscode-plugin/pull/635)
+- [Fix project not found when `project.tekisasu` file is excluded](https://github.com/godotengine/godot-vscode-plugin/pull/635)
 - [Fix LSP connection attempts not resetting](https://github.com/godotengine/godot-vscode-plugin/pull/638)
 - [Fix child processes not being killed properly](https://github.com/godotengine/godot-vscode-plugin/pull/613)
 - [Fix broken scene file parser](https://github.com/godotengine/godot-vscode-plugin/pull/603)

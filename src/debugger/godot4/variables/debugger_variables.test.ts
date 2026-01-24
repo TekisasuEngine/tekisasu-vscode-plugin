@@ -226,10 +226,10 @@ suite("DAP Integration Tests - Variable Scopes", () => {
 		}
 
 		// init the godot project by importing it in godot engine:
-		const config = vscode.workspace.getConfiguration("godotTools");
-		// config.update("editorPath.godot4", "godot4", vscode.ConfigurationTarget.Workspace);
+		const config = vscode.workspace.getConfiguration("tekisasuTools");
+		// config.update("editorPath.tekisasuEngine", "godot4", vscode.ConfigurationTarget.Workspace);
 
-		const godot4_path = clean_godot_path(config.get<string>("editorPath.godot4"));
+		const godot4_path = clean_godot_path(config.get<string>("editorPath.tekisasuEngine"));
 
 		// get the path for currently opened project in vscode test instance:
 		console.log("Executing", [godot4_path, "--headless", "--import", workspaceFolder]);

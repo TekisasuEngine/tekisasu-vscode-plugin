@@ -46,7 +46,7 @@ export class ScenePreviewProvider implements TreeDataProvider<SceneNode>, TreeDr
 	onDidChangeTreeData = this.changeTreeEvent.event;
 
 	constructor(private context: ExtensionContext) {
-		this.tree = vscode.window.createTreeView("godotTools.scenePreview", {
+		this.tree = vscode.window.createTreeView("tekisasuTools.scenePreview", {
 			treeDataProvider: this,
 			dragAndDropController: this,
 		});
@@ -71,7 +71,7 @@ export class ScenePreviewProvider implements TreeDataProvider<SceneNode>, TreeDr
 			this.tree.onDidChangeSelection(this.tree_selection_changed),
 			this.tree,
 		);
-		const result: string | undefined = this.context.workspaceState.get("godotTools.scenePreview.lockedScene");
+		const result: string | undefined = this.context.workspaceState.get("tekisasuTools.scenePreview.lockedScene");
 		if (result) {
 			if (fs.existsSync(result)) {
 				set_context("scenePreview.locked", true);
@@ -168,13 +168,13 @@ export class ScenePreviewProvider implements TreeDataProvider<SceneNode>, TreeDr
 	private lock_preview() {
 		this.scenePreviewLocked = true;
 		set_context("scenePreview.locked", true);
-		this.context.workspaceState.update("godotTools.scenePreview.lockedScene", this.currentScene);
+		this.context.workspaceState.update("tekisasuTools.scenePreview.lockedScene", this.currentScene);
 	}
 
 	private unlock_preview() {
 		this.scenePreviewLocked = false;
 		set_context("scenePreview.locked", false);
-		this.context.workspaceState.update("godotTools.scenePreview.lockedScene", "");
+		this.context.workspaceState.update("tekisasuTools.scenePreview.lockedScene", "");
 		this.refresh();
 	}
 

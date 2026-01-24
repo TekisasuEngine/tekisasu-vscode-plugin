@@ -8,7 +8,7 @@ body:
   attributes:
     value: |
       - Write a descriptive issue title above.
-      - Search [open](https://github.com/godotengine/godot-vscode-plugin/issues) and [closed](https://github.com/godotengine/godot-vscode-plugin/issues?q=is%3Aissue+is%3Aclosed) issues to ensure it has not already been reported.
+      - Search [open](https://github.com/TekisasuEngine/tekisasu-vscode-plugin/issues) and [closed](https://github.com/TekisasuEngine/tekisasu-vscode-plugin/issues?q=is%3Aissue+is%3Aclosed) issues to ensure it has not already been reported.
       - Verify that you are using a [supported Godot version](https://docs.godotengine.org/en/stable/about/release_policy.html).
       - This repository only contains the LSP *client*. Issues pertaining to the Godot editor itself or the LSP's *server* side should be reported on the [main Godot repository](https://github.com/godotengine/godot/issues).
 
@@ -37,7 +37,7 @@ body:
   attributes:
     label: Godot Tools VS Code extension version
     description: >
-      Open the **Extensions** side panel and click on the **godot-tools** extension to see your current version.
+      Open the **Extensions** side panel and click on the **tekisasu-tools** extension to see your current version.
       Specify the Git commit hash if using a development or non-official build.
       If you use a custom build, please test if your issue is reproducible in official builds too.
     placeholder: "2.5.1"

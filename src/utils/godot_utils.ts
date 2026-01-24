@@ -25,7 +25,7 @@ export async function get_project_dir(): Promise<string | undefined> {
 
 	let file = "";
 	if (vscode.workspace.workspaceFolders !== undefined) {
-		const files = await vscode.workspace.findFiles("**/project.godot", null);
+		const files = await vscode.workspace.findFiles("**/project.tekisasu", null);
 
 		if (files.length === 0) {
 			return undefined;
@@ -99,8 +99,8 @@ export function find_project_file(start: string, depth = 20) {
 	// This function appears to be fast enough, but if speed is ever an issue,
 	// memoizing the result should be straightforward
 	if (start === ".") {
-		if (fs.existsSync("project.godot") && fs.statSync("project.godot").isFile()) {
-			return "project.godot";
+		if (fs.existsSync("project.tekisasu") && fs.statSync("project.tekisasu").isFile()) {
+			return "project.tekisasu";
 		}
 		return null;
 	}
@@ -108,7 +108,7 @@ export function find_project_file(start: string, depth = 20) {
 	if (start === folder) {
 		return null;
 	}
-	const projFile = path.join(folder, "project.godot");
+	const projFile = path.join(folder, "project.tekisasu");
 
 	if (fs.existsSync(projFile) && fs.statSync(projFile).isFile()) {
 		return projFile;

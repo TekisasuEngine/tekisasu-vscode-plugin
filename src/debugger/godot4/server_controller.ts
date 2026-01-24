@@ -183,9 +183,9 @@ export class ServerController {
 				}
 			}
 		} else {
-			log.info("Using 'editorPath.godot4' from settings");
+			log.info("Using 'editorPath.tekisasuEngine' from settings");
 
-			const settingName = "editorPath.godot4";
+			const settingName = "editorPath.tekisasuEngine";
 			godotPath = get_configuration(settingName);
 
 			log.info(`Verifying version of '${godotPath}'`);

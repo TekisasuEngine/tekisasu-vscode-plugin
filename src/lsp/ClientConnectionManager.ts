@@ -53,7 +53,7 @@ export class ClientConnectionManager {
 		set_context("connectedToLSP", false);
 
 		this.statusWidget = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
-		this.statusWidget.command = "godotTools.checkStatus";
+		this.statusWidget.command = "tekisasuTools.checkStatus";
 		this.statusWidget.show();
 		this.update_status_widget();
 
@@ -115,10 +115,11 @@ export class ClientConnectionManager {
 			minimumVersion = "2";
 			targetVersion = "4.2";
 		}
-		const settingName = `editorPath.godot${projectVersion[0]}`;
+		// Always use tekisasuEngine setting (assumes Godot 4)
+		const settingName = "editorPath.tekisasuEngine";
 		let godotPath = get_configuration(settingName);
 
-		const result = verify_godot_version(godotPath, projectVersion[0]);
+		const result = verify_godot_version(godotPath, "4");
 		godotPath = result.godotPath;
 
 		switch (result.status) {
@@ -356,7 +357,7 @@ export class ClientConnectionManager {
 				this.connect_to_language_server();
 			}
 			if (item === "Open workspace with Godot Editor") {
-				vscode.commands.executeCommand("godotTools.openEditor");
+				vscode.commands.executeCommand("tekisasuTools.openEditor");
 				this.connect_to_language_server();
 			}
 		});
