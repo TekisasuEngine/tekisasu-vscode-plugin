@@ -2,8 +2,9 @@
 	"name": "tekisasu-tools",
 	"displayName": "tekisasu-tools",
 	"icon": "icon.png",
-	"version": "2.5.1",
-	"description": "Tools for game development with Godot Engine and GDScript",
+	"version": "2026.1.2",
+	"upstreamVersion": "2.5.1",
+	"description": "Tools for game development with Tekisasu Engine and GDScript",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/TekisasuEngine/tekisasu-vscode-plugin"
@@ -47,7 +48,7 @@
 		"customEditors": [
 			{
 				"viewType": "gddoc",
-				"displayName": "Godot Documentation",
+				"displayName": "Tekisasu Engine Documentation",
 				"selector": [
 					{
 						"filenamePattern": "*.gddoc"
@@ -57,32 +58,32 @@
 		],
 		"commands": [
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.openEditor",
-				"title": "Open workspace with Godot editor"
+				"title": "Open workspace with Tekisasu editor"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.openEditorSettings",
 				"title": "Open EditorSettings File"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.startLanguageServer",
 				"title": "Start the GDScript Language Server for this workspace"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.stopLanguageServer",
 				"title": "Stop the GDScript Language Server for this workspace"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.listGodotClasses",
-				"title": "List Godot classes"
+				"title": "List Tekisasu classes"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.debugger.inspectNode",
 				"title": "Inspect Remote Node",
 				"icon": {
@@ -91,7 +92,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.debugger.refreshSceneTree",
 				"title": "Refresh",
 				"icon": {
@@ -100,7 +101,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.debugger.refreshInspector",
 				"title": "Refresh",
 				"icon": {
@@ -109,7 +110,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.debugger.editValue",
 				"title": "Edit value",
 				"icon": {
@@ -118,7 +119,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.debugger.debugCurrentFile",
 				"title": "Debug Current File",
 				"icon": {
@@ -127,7 +128,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.debugger.debugPinnedFile",
 				"title": "Debug Pinned File",
 				"icon": {
@@ -136,24 +137,24 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.debugger.pinFile",
 				"title": "Pin Scene File",
 				"icon": "resources/pin_off.svg"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.debugger.unpinFile",
 				"title": "Unpin Scene File",
 				"icon": "resources/pin_on.svg"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.debugger.openPinnedFile",
 				"title": "Open the currently pinned scene"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.refresh",
 				"title": "Refresh Scene Preview",
 				"icon": {
@@ -162,7 +163,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.openCurrentScene",
 				"title": "Open the Scene Preview's current scene",
 				"icon": {
@@ -171,7 +172,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.openMainScript",
 				"title": "Open the main script of the Scene Preview's current scene",
 				"icon": {
@@ -180,7 +181,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.lock",
 				"title": "Lock Scene Preview",
 				"icon": {
@@ -189,7 +190,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.unlock",
 				"title": "Unlock Scene Preview",
 				"icon": {
@@ -198,27 +199,27 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.goToDefinition",
 				"title": "Go to Definition"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.openDocumentation",
 				"title": "Open Documentation"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.copyNodePath",
 				"title": "Copy Node Path"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.copyResourcePath",
 				"title": "Copy Resource Path"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.openScene",
 				"title": "Open Scene",
 				"icon": {
@@ -227,7 +228,7 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.scenePreview.openScript",
 				"title": "Open Script",
 				"icon": {
@@ -236,12 +237,12 @@
 				}
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.switchSceneScript",
 				"title": "Switch Scene/Script"
 			},
 			{
-				"category": "Godot Tools",
+				"category": "Tekisasu Tools",
 				"command": "tekisasuTools.copyResourcePath",
 				"title": "Copy Resource Path"
 			}
@@ -255,19 +256,19 @@
 		],
 		"configuration": {
 			"type": "object",
-			"title": "Godot Tools",
+			"title": "Tekisasu Tools",
 			"properties": {
 				"tekisasuTools.documentation.pageScale": {
 					"type": "integer",
 					"default": 100,
 					"minimum": 50,
 					"maximum": 200,
-					"description": "Scale factor (%) to apply to the Godot documentation viewer."
+					"description": "Scale factor (%) to apply to the Tekisasu Engine documentation viewer."
 				},
 				"tekisasuTools.documentation.displayMinimap": {
 					"type": "boolean",
 					"default": true,
-					"description": "Whether to display the minimap for the Godot documentation viewer."
+					"description": "Whether to display the minimap for the Tekisasu Engine documentation viewer."
 				},
 				"tekisasuTools.editorPath.godot3": {
 					"type": "string",
@@ -283,12 +284,12 @@
 				"tekisasuTools.editor.verbose": {
 					"type": "boolean",
 					"default": false,
-					"description": "Whether to launch the Godot Editor with the --verbose flag"
+					"description": "Whether to launch the Tekisasu Editor with the --verbose flag"
 				},
 				"tekisasuTools.editor.revealTerminal": {
 					"type": "boolean",
 					"default": true,
-					"description": "Whether to reveal the terminal when launching the Godot Editor"
+					"description": "Whether to reveal the terminal when launching the Tekisasu Editor"
 				},
 				"tekisasuTools.formatter.maxEmptyLines": {
 					"type": "string",
