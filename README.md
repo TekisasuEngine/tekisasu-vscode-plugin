@@ -80,7 +80,7 @@ in the Visual Studio Code documentation.
 
 The extension adds a few entries to the VS Code Command Palette under "Tekisasu Tools":
 
-- Open workspace with Godot editor
+- Open workspace with TekisasuEngine editor
 - List Godot's native classes (and open thier documentation)
 - Debug the current `.tscn`/`.gd` file
 - Debug the pinned `.tscn`/`.gd` file

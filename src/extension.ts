@@ -95,21 +95,21 @@ async function initial_setup() {
 	// Always use tekisasuEngine setting (assumes Godot 4)
 	const settingName = "editorPath.tekisasuEngine";
 	const result = verify_godot_version(get_configuration(settingName), "4");
-	const godotPath = result.godotPath;
+	const tekisasuPath = result.tekisasuPath;
 
 	switch (result.status) {
 		case "SUCCESS": {
 			break;
 		}
 		case "WRONG_VERSION": {
-			const message = `The specified TekisasuEngine executable, '${godotPath}' is the wrong version. 
-				The current project uses Godot v${projectVersion}, but the specified executable is Godot v${result.version}.
+			const message = `The specified TekisasuEngine executable, '${tekisasuPath}' is the wrong version. 
+				The current project uses TekisasuEngine v${projectVersion}, but the specified executable is TekisasuEngine v${result.version}.
 				Extension features will not work correctly unless this is fixed.`;
 			prompt_for_godot_executable(message, settingName);
 			break;
 		}
 		case "INVALID_EXE": {
-			const message = `The specified TekisasuEngine executable, '${godotPath}' is invalid. 
+			const message = `The specified TekisasuEngine executable, '${tekisasuPath}' is invalid. 
 				Extension features will not work correctly unless this is fixed.`;
 			prompt_for_godot_executable(message, settingName);
 			break;
@@ -160,11 +160,11 @@ async function open_workspace_with_editor() {
 	// Always use tekisasuEngine setting (assumes Godot 4)
 	const settingName = "editorPath.tekisasuEngine";
 	const result = verify_godot_version(get_configuration(settingName), "4");
-	const godotPath = result.godotPath;
+	const tekisasuPath = result.tekisasuPath;
 
 	switch (result.status) {
 		case "SUCCESS": {
-			let command = `"${godotPath}" --path "${projectDir}" -e`;
+			let command = `"${tekisasuPath}" --path "${projectDir}" -e`;
 			if (get_configuration("editor.verbose")) {
 				command += " -v";
 			}
@@ -185,12 +185,12 @@ async function open_workspace_with_editor() {
 			break;
 		}
 		case "WRONG_VERSION": {
-			const message = `Cannot launch Godot editor: The current project uses Godot v${projectVersion}, but the specified TekisasuEngine executable is version ${result.version}`;
+			const message = `Cannot launch TekisasuEngine editor: The current project uses TekisasuEngine v${projectVersion}, but the specified TekisasuEngine executable is version ${result.version}`;
 			prompt_for_godot_executable(message, settingName);
 			break;
 		}
 		case "INVALID_EXE": {
-			const message = `Cannot launch Godot editor: '${settingName}' value of '${godotPath}' is not a valid TekisasuEngine executable`;
+			const message = `Cannot launch TekisasuEngine editor: '${settingName}' value of '${tekisasuPath}' is not a valid TekisasuEngine executable`;
 			prompt_for_godot_executable(message, settingName);
 			break;
 		}

@@ -201,48 +201,48 @@ export async function convert_uid_to_uri(uid: string): Promise<vscode.Uri | unde
 export type VERIFY_STATUS = "SUCCESS" | "WRONG_VERSION" | "INVALID_EXE";
 export type VERIFY_RESULT = {
 	status: VERIFY_STATUS;
-	godotPath: string;
+	tekisasuPath: string;
 	version?: string;
 };
 
-export function verify_godot_version(godotPath: string, expectedVersion: "3" | "4" | string): VERIFY_RESULT {
-	let target = clean_godot_path(godotPath);
+export function verify_godot_version(tekisasuPath: string, expectedVersion: "3" | "4" | string): VERIFY_RESULT {
+	let target = clean_godot_path(tekisasuPath);
 
 	let output = "";
 	try {
 		output = execSync(`"${target}" --version`).toString().trim();
 	} catch {
 		if (path.isAbsolute(target)) {
-			return { status: "INVALID_EXE", godotPath: target };
+			return { status: "INVALID_EXE", tekisasuPath: target };
 		}
 		const workspacePath = vscode.workspace.workspaceFolders[0].uri.fsPath;
 		target = path.resolve(workspacePath, target);
 		try {
 			output = execSync(`"${target}" --version`).toString().trim();
 		} catch {
-			return { status: "INVALID_EXE", godotPath: target };
+			return { status: "INVALID_EXE", tekisasuPath: target };
 		}
 	}
 
 	const pattern = /^(([34])\.([0-9]+)(?:\.[0-9]+)?)/m;
 	const match = output.match(pattern);
 	if (!match) {
-		return { status: "INVALID_EXE", godotPath: target };
+		return { status: "INVALID_EXE", tekisasuPath: target };
 	}
 	if (match[2] !== expectedVersion) {
-		return { status: "WRONG_VERSION", godotPath: target, version: match[1] };
+		return { status: "WRONG_VERSION", tekisasuPath: target, version: match[1] };
 	}
-	return { status: "SUCCESS", godotPath: target, version: match[1] };
+	return { status: "SUCCESS", tekisasuPath: target, version: match[1] };
 }
 
-export function clean_godot_path(godotPath: string): string {
-	let pathToClean = godotPath;
+export function clean_godot_path(tekisasuPath: string): string {
+	let pathToClean = tekisasuPath;
 
 	// check for environment variable syntax
 	// looking for: ${env:FOOBAR}
 	// extracts "FOOBAR"
 	const pattern = /\$\{env:(.+?)\}/;
-	const match = godotPath.match(pattern);
+	const match = tekisasuPath.match(pattern);
 
 	if (match && match.length >= 2)	{
 		pathToClean = process.env[match[1]];
