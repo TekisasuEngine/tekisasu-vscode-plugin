@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a bug in Godot Tools VS Code add-on
+description: Report a bug in Tekisasu Tools VS Code add-on
 labels:
   - bug
 body:
@@ -35,7 +35,7 @@ body:
 
 - type: input
   attributes:
-    label: Godot Tools VS Code extension version
+    label: Tekisasu Tools VS Code extension version
     description: >
       Open the **Extensions** side panel and click on the **tekisasu-tools** extension to see your current version.
       Specify the Git commit hash if using a development or non-official build.

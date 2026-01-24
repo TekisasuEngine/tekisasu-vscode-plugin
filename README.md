@@ -26,7 +26,7 @@ Game development tools for working with [TekisasuEngine](https://github.com/Teki
 
 # Features
 
-(**bold items** are new in Godot Tools `v2.0.0`)
+(**bold items** are new in Tekisasu Tools `v2.0.0`)
 - **ALL FEATURES FULLY SUPPORT GODOT 4** (TekisasuEngine is Godot 4-based)
 - GDScript (`.gd`) language features:
   - syntax highlighting
@@ -78,7 +78,7 @@ in the Visual Studio Code documentation.
 
 # Commands
 
-The extension adds a few entries to the VS Code Command Palette under "Godot Tools":
+The extension adds a few entries to the VS Code Command Palette under "Tekisasu Tools":
 
 - Open workspace with Godot editor
 - List Godot's native classes (and open thier documentation)
