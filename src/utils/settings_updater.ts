@@ -3,6 +3,7 @@ import * as vscode from "vscode";
 const OLD_SETTINGS_CONVERSIONS = [
 	["godot_tools.editor_path", "godotTools.editorPath.godot3"],
 	["godot_tools.editor_path", "godotTools.editorPath.godot4"],
+	["godotTools.editorPath.godot4", "godotTools.editorPath.tekisasuEngine"],
 	["godot_tools.gdscript_lsp_server_protocol", "godotTools.lsp.serverProtocol"],
 	["godot_tools.gdscript_lsp_server_host", "godotTools.lsp.serverHost"],
 	["godot_tools.gdscript_lsp_server_port", "godotTools.lsp.serverPort"],

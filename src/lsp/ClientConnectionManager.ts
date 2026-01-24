@@ -115,7 +115,8 @@ export class ClientConnectionManager {
 			minimumVersion = "2";
 			targetVersion = "4.2";
 		}
-		const settingName = `editorPath.godot${projectVersion[0]}`;
+		// Always use tekisasuEngine setting (assumes Godot 4)
+		const settingName = "editorPath.tekisasuEngine";
 		let godotPath = get_configuration(settingName);
 
 		const result = verify_godot_version(godotPath, projectVersion[0]);

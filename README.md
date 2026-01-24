@@ -107,10 +107,9 @@ You can make Godot seamlessly reload VSCode-edited scripts by changing some addi
 
 You can use the following settings to configure Godot Tools:
 
-- `godotTools.editorPath.godot3`
-- `godotTools.editorPath.godot4`
+- `godotTools.editorPath.tekisasuEngine`
 
-The path to the Godot editor executable. _Under Mac OS, this is the executable inside of Godot.app._
+The path to the TekisasuEngine editor executable. _Under Mac OS, this is the executable inside of Godot.app._
 
 - `godotTools.lsp.headless`
   

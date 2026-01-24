@@ -92,7 +92,8 @@ async function initial_setup() {
 		// TODO: actually handle this?
 		return;
 	}
-	const settingName = `editorPath.godot${projectVersion[0]}`;
+	// Always use tekisasuEngine setting (assumes Godot 4)
+	const settingName = "editorPath.tekisasuEngine";
 	const result = verify_godot_version(get_configuration(settingName), projectVersion[0]);
 	const godotPath = result.godotPath;
 
@@ -156,7 +157,8 @@ async function open_workspace_with_editor() {
 	const projectDir = await get_project_dir();
 	const projectVersion = await get_project_version();
 
-	const settingName = `editorPath.godot${projectVersion[0]}`;
+	// Always use tekisasuEngine setting (assumes Godot 4)
+	const settingName = "editorPath.tekisasuEngine";
 	const result = verify_godot_version(get_configuration(settingName), projectVersion[0]);
 	const godotPath = result.godotPath;
 
@@ -229,10 +231,10 @@ async function open_godot_editor_settings() {
 }
 
 /**
- * Returns the executable path for Godot based on the current project's version.
+ * Returns the executable path for TekisasuEngine based on the current project's version.
  * Created to allow other extensions to get the path without having to go
  * through the steps of determining the version to get the proper configuration
- * value (godotTools.editorPath.godot3/4).
+ * value (godotTools.editorPath.tekisasuEngine).
  * @returns
  */
 async function get_godot_path(): Promise<string | undefined> {
@@ -240,7 +242,8 @@ async function get_godot_path(): Promise<string | undefined> {
 	if (projectVersion === undefined) {
 		return undefined;
 	}
-	const settingName = `editorPath.godot${projectVersion[0]}`;
+	// Always use tekisasuEngine setting (assumes Godot 4)
+	const settingName = "editorPath.tekisasuEngine";
 	return clean_godot_path(get_configuration(settingName));
 }
 
