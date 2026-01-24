@@ -327,7 +327,7 @@
 				},
 				"godotTools.lsp.serverPort": {
 					"type": "number",
-					"default": 6008,
+					"default": 6005,
 					"minimum": 0,
 					"maximum": 65535,
 					"description": "The server port of the GDScript language server"
