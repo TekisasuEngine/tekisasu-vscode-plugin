@@ -1,6 +1,6 @@
 {
-	"name": "godot-tools",
-	"displayName": "godot-tools",
+	"name": "tekisasu-tools",
+	"displayName": "tekisasu-tools",
 	"icon": "icon.png",
 	"version": "2.5.1",
 	"description": "Tools for game development with Godot Engine and GDScript",
@@ -12,8 +12,8 @@
 		"url": "https://github.com/godotengine/godot-vscode-plugin/issues"
 	},
 	"license": "MIT",
-	"author": "The Godot Engine community",
-	"publisher": "geequlim",
+	"author": "Tekisasu",
+	"publisher": "Tekisasu",
 	"engines": {
 		"vscode": "^1.96.0"
 	},

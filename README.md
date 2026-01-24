@@ -61,11 +61,11 @@ Godot 3.2 or later.
 
 # Download
 
-- [Visual Studio Marketplace **(recommended)**](https://marketplace.visualstudio.com/items?itemName=geequlim.godot-tools)
+- [Visual Studio Marketplace **(recommended)**](https://marketplace.visualstudio.com/items?itemName=Tekisasu.tekisasu-tools)
   - Stable release, with support for automatic updates.
 - [GitHub Releases](https://github.com/godotengine/godot-vscode-plugin/releases)
   - Stable release, but no automatic updates. Can be useful if you need to install an older version of the extension.
-- [Development build (follows the `master` branch)](https://nightly.link/godotengine/godot-vscode-plugin/workflows/ci/master/godot-tools.zip)
+- [Development build (follows the `master` branch)](https://nightly.link/godotengine/godot-vscode-plugin/workflows/ci/master/tekisasu-tools.zip)
   - Development build. Contains new features and fixes not available in stable releases, but may be unstable.
   - Extract the ZIP archive before installing (it contains the `.vsix` file inside).
 
@@ -187,7 +187,7 @@ The [Godot Tools](https://github.com/godotengine/godot-vscode-plugin) extension
 is an open source project from the Godot organization. Feel free to open issues
 and create pull requests anytime.
 
-See the [full changelog](https://github.com/GodotExplorer/godot-tools/blob/master/CHANGELOG.md)
+See the [full changelog](https://github.com/GodotExplorer/tekisasu-tools/blob/master/CHANGELOG.md)
 for the latest changes.
 
 # Contributing

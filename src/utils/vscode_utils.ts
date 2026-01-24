@@ -26,5 +26,5 @@ export function register_command(command: string, callback: (...args: any[]) => 
 }
 
 export function get_extension_uri(...paths: string[]) {
-	return vscode.Uri.joinPath(vscode.extensions.getExtension("geequlim.godot-tools").extensionUri, ...paths ?? "");
+	return vscode.Uri.joinPath(vscode.extensions.getExtension("Tekisasu.tekisasu-tools").extensionUri, ...paths ?? "");
 }

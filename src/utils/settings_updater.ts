@@ -28,7 +28,7 @@ export function updateOldStyleSettings() {
 		// Only show this message if things have actually changed, to prevent users who
 		// are just reinstalling the extension from receiveing it.
 		vscode.window.showInformationMessage(
-			`Settings from godot-tools version <2.0.0 have been updated to the new format.
+			`Settings from tekisasu-tools version <2.0.0 have been updated to the new format.
 			Please view the changelog for version 2.0.0 for more information.`,
 			"Okay"
 		);
