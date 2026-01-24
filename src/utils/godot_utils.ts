@@ -224,11 +224,37 @@ export function verify_godot_version(tekisasuPath: string, expectedVersion: "3" 
 		}
 	}
 
-	const pattern = /^(([34])\.([0-9]+)(?:\.[0-9]+)?)/m;
-	const match = output.match(pattern);
+	// Support both Godot versioning (4.x.x) and TekisasuEngine versioning (2026.x.x)
+	// TekisasuEngine uses YYYY.MAJOR.MINOR format and is based on Godot 4
+	const godotPattern = /^(([34])\.([0-9]+)(?:\.[0-9]+)?)/m;
+	const tekisasuPattern = /^(([0-9]{4})\.([0-9]+)\.([0-9]+))/m;
+	
+	let match = output.match(godotPattern);
+	let isTekisasu = false;
+	
+	if (!match) {
+		// Try TekisasuEngine pattern
+		match = output.match(tekisasuPattern);
+		isTekisasu = true;
+	}
+	
 	if (!match) {
 		return { status: "INVALID_EXE", tekisasuPath: target };
 	}
+	
+	// For TekisasuEngine versions (YYYY.x.x), treat as Godot 4 compatible
+	if (isTekisasu) {
+		const year = parseInt(match[2]);
+		// TekisasuEngine is Godot 4-based, so any TekisasuEngine version should match expectedVersion "4"
+		if (expectedVersion === "4") {
+			return { status: "SUCCESS", tekisasuPath: target, version: match[1] };
+		} else if (expectedVersion === "3") {
+			// TekisasuEngine doesn't support Godot 3
+			return { status: "WRONG_VERSION", tekisasuPath: target, version: match[1] };
+		}
+	}
+	
+	// For Godot versions (3.x or 4.x)
 	if (match[2] !== expectedVersion) {
 		return { status: "WRONG_VERSION", tekisasuPath: target, version: match[1] };
 	}
