@@ -29,10 +29,10 @@ An example `workspace.code-workspace` file:
 		}
 	],
     "settings": {
-		"godotTools.editorPath.tekisasuEngine": "godot4.dev.exe",
-		// "godotTools.editorPath.tekisasuEngine": "godot4.custom.exe"
-        // "godotTools.editorPath.tekisasuEngine": "Godot_v4.1.1-stable_win64.exe",
-        "godotTools.lsp.headless": false
+		"tekisasuTools.editorPath.tekisasuEngine": "godot4.dev.exe",
+		// "tekisasuTools.editorPath.tekisasuEngine": "godot4.custom.exe"
+        // "tekisasuTools.editorPath.tekisasuEngine": "Godot_v4.1.1-stable_win64.exe",
+        "tekisasuTools.lsp.headless": false
 	}
 }
 ```

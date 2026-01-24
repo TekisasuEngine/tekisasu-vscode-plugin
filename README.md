@@ -108,15 +108,15 @@ You can make TekisasuEngine seamlessly reload VSCode-edited scripts by changing 
 
 You can use the following settings to configure Tekisasu Tools:
 
-- `godotTools.editorPath.tekisasuEngine`
+- `tekisasuTools.editorPath.tekisasuEngine`
 
 The path to the TekisasuEngine editor executable. _Under Mac OS, this is the executable inside of the .app bundle._
 
-- `godotTools.lsp.serverPort`
+- `tekisasuTools.lsp.serverPort`
 
 The port for the GDScript Language Server. Default is `6005` for TekisasuEngine.
 
-- `godotTools.lsp.headless`
+- `tekisasuTools.lsp.headless`
   
 When using TekisasuEngine (Godot 4.2+), Headless LSP mode is available. In Headless mode, the extension will attempt to launch a windowless instance of the TekisasuEngine editor to use as its Language Server.
 
@@ -215,7 +215,7 @@ see [CONTRIBUTING.md](CONTRIBUTING.md)
   the editor after opening VS Code, you can click the **Retry** button
   in the bottom-right corner in VS Code.
 - Reset the LSP Server port to the default value (6005) in both TekisasuEngine's Editor Settings and in VSCode.
-- Verify that `godotTools.editorPath.tekisasuEngine` is set correctly in VSCode settings.
+- Verify that `tekisasuTools.editorPath.tekisasuEngine` is set correctly in VSCode settings.
 
 ### Why isn't IntelliSense displaying script members?
 

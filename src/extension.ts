@@ -234,7 +234,7 @@ async function open_godot_editor_settings() {
  * Returns the executable path for TekisasuEngine based on the current project's version.
  * Created to allow other extensions to get the path without having to go
  * through the steps of determining the version to get the proper configuration
- * value (godotTools.editorPath.tekisasuEngine).
+ * value (tekisasuTools.editorPath.tekisasuEngine).
  * @returns
  */
 async function get_godot_path(): Promise<string | undefined> {

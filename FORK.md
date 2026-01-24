@@ -25,21 +25,21 @@ Complete rebranding of the VSCode extension for the TekisasuEngine fork. This ex
 
 ### 3. LSP Server Configuration
 - **Default port**: Changed from `6008` to `6005`
-- Setting: `godotTools.lsp.serverPort`
+- Setting: `tekisasuTools.lsp.serverPort`
 
 ### 4. Editor Path Settings
 - **Godot 3 setting**: Deprecated (hidden from UI but code retained for easier rebasing)
-  - Setting: `godotTools.editorPath.godot3`
+  - Setting: `tekisasuTools.editorPath.godot3`
   - Added deprecation message: "This setting is deprecated. Tekisasu only supports Godot 4."
 - **Godot 4 setting**: Renamed to TekisasuEngine
-  - Old: `godotTools.editorPath.godot4`
-  - New: `godotTools.editorPath.tekisasuEngine`
+  - Old: `tekisasuTools.editorPath.godot4`
+  - New: `tekisasuTools.editorPath.tekisasuEngine`
   - Description updated to: "Path to the TekisasuEngine editor executable"
 - **Version assumption**: All version checks hardcoded to "4" (Godot 4 only)
 
 ### 5. Backward Compatibility
 - Added settings migration in `src/utils/settings_updater.ts`
-- Converts old `godotTools.editorPath.godot4` to new `godotTools.editorPath.tekisasuEngine`
+- Converts old `tekisasuTools.editorPath.godot4` to new `tekisasuTools.editorPath.tekisasuEngine`
 - Preserves existing user configurations during upgrade
 
 ## Files Modified
@@ -79,7 +79,7 @@ The Godot 3 code paths are retained (but the setting is deprecated and hidden) t
 TekisasuEngine is based on Godot 4 only. Hardcoding the version to "4" in all verification checks simplifies the codebase and removes unnecessary version detection logic for this fork.
 
 ### Backward Compatibility
-Users upgrading from configurations that used `godotTools.editorPath.godot4` will have their settings automatically migrated to `godotTools.editorPath.tekisasuEngine` thanks to the settings updater.
+Users upgrading from configurations that used `tekisasuTools.editorPath.godot4` will have their settings automatically migrated to `tekisasuTools.editorPath.tekisasuEngine` thanks to the settings updater.
 
 ## Installation
 
