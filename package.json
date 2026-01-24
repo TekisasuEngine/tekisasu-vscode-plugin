@@ -6,10 +6,10 @@
 	"description": "Tools for game development with Godot Engine and GDScript",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/godotengine/godot-vscode-plugin"
+		"url": "https://github.com/TekisasuEngine/tekisasu-vscode-plugin"
 	},
 	"bugs": {
-		"url": "https://github.com/godotengine/godot-vscode-plugin/issues"
+		"url": "https://github.com/TekisasuEngine/tekisasu-vscode-plugin/issues"
 	},
 	"license": "MIT",
 	"author": "Tekisasu",

@@ -66,9 +66,9 @@ Game development tools for working with [TekisasuEngine](https://github.com/Teki
 
 - [Visual Studio Marketplace **(recommended)**](https://marketplace.visualstudio.com/items?itemName=Tekisasu.tekisasu-tools)
   - Stable release, with support for automatic updates.
-- [GitHub Releases](https://github.com/godotengine/godot-vscode-plugin/releases)
+- [GitHub Releases](https://github.com/TekisasuEngine/tekisasu-vscode-plugin/releases)
   - Stable release, but no automatic updates. Can be useful if you need to install an older version of the extension.
-- [Development build (follows the `master` branch)](https://nightly.link/godotengine/godot-vscode-plugin/workflows/ci/master/tekisasu-tools.zip)
+- [Development build (follows the `master` branch)](https://nightly.link/TekisasuEngine/tekisasu-vscode-plugin/workflows/ci/master/tekisasu-tools.zip)
   - Development build. Contains new features and fixes not available in stable releases, but may be unstable.
   - Extract the ZIP archive before installing (it contains the `.vsix` file inside).
 
