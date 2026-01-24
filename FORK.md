@@ -14,6 +14,8 @@ Complete rebranding of the VSCode extension for the TekisasuEngine fork. This ex
 - **Author**: `The Godot Engine community` → `Tekisasu`
 - **Publisher**: `geequlim` → `Tekisasu`
 - **Extension ID**: `geequlim.godot-tools` → `Tekisasu.tekisasu-tools`
+- **Namespace**: `godotTools` → `tekisasuTools` (commands, settings, views, context keys)
+- **Icon**: Replaced `godot_icon.svg` with `tekisasu_icon.svg` throughout
 - **Copyright**: Original copyright preserved in LICENSE file
 
 ### 2. Project File Identifier
@@ -37,7 +39,25 @@ Complete rebranding of the VSCode extension for the TekisasuEngine fork. This ex
   - Description updated to: "Path to the TekisasuEngine editor executable"
 - **Version assumption**: All version checks hardcoded to "4" (Godot 4 only)
 
-### 5. Backward Compatibility
+### 5. Namespace Replacement
+- **BREAKING CHANGE**: All settings, commands, views, and context keys renamed from `godotTools.*` to `tekisasuTools.*`
+- **Settings**: All configuration keys now use `tekisasuTools` prefix
+  - Example: `tekisasuTools.editorPath.tekisasuEngine`, `tekisasuTools.lsp.serverPort`
+- **Commands**: All command IDs updated (e.g., `tekisasuTools.openEditor`)
+- **Views**: View container and view IDs updated (e.g., `tekisasuTools.scenePreview`)
+- **Extension prefix**: Changed from `"godotTools"` to `"tekisasuTools"` in code
+- **Impact**: Users must update their VSCode settings when upgrading to this fork
+
+### 6. Visual Branding
+- **Icon replacement**: Removed `resources/godot_icon.svg`, replaced with `resources/tekisasu_icon.svg`
+- **Updated locations**:
+  - Activity bar container icon
+  - View icons (Active Scene Tree, Inspector, Scene Preview)
+  - Documentation panel icon
+  - Terminal icon
+- **Main extension icon**: Updated `icon.png` to TekisasuEngine branding
+
+### 7. Backward Compatibility
 - Added settings migration in `src/utils/settings_updater.ts`
 - Converts old `tekisasuTools.editorPath.godot4` to new `tekisasuTools.editorPath.tekisasuEngine`
 - Preserves existing user configurations during upgrade
@@ -45,17 +65,21 @@ Complete rebranding of the VSCode extension for the TekisasuEngine fork. This ex
 ## Files Modified
 
 ### Core Package Files
-- `package.json` - Name, displayName, author, publisher, activation events, settings
+- `package.json` - Name, displayName, author, publisher, activation events, settings namespace (tekisasuTools), commands, views, icon references
 - `package-lock.json` - Regenerated with new package name
 
 ### Source Code
 - `src/utils/godot_utils.ts` - File search patterns for `project.tekisasu`
-- `src/utils/vscode_utils.ts` - Extension ID reference
-- `src/utils/settings_updater.ts` - Settings migration and messages
-- `src/extension.ts` - TekisasuEngine setting usage, hardcoded Godot 4
-- `src/lsp/ClientConnectionManager.ts` - TekisasuEngine setting usage, hardcoded Godot 4
+- `src/utils/vscode_utils.ts` - Extension ID reference, EXTENSION_PREFIX changed to "tekisasuTools"
+- `src/utils/settings_updater.ts` - Settings migration and messages, tekisasuTools namespace
+- `src/extension.ts` - TekisasuEngine setting usage, hardcoded Godot 4, terminal icon updated
+- `src/lsp/ClientConnectionManager.ts` - TekisasuEngine setting usage, hardcoded Godot 4, tekisasuTools commands
 - `src/debugger/godot4/server_controller.ts` - TekisasuEngine setting usage
-- `src/debugger/godot4/variables/debugger_variables.test.ts` - Test updates
+- `src/debugger/godot4/variables/debugger_variables.test.ts` - Test updates, tekisasuTools config
+- `src/scene_tools/preview.ts` - View ID and workspace state keys updated to tekisasuTools
+- `src/debugger/scene_tree_provider.ts` - View ID updated to tekisasuTools.activeSceneTree
+- `src/debugger/inspector_provider.ts` - View ID updated to tekisasuTools.nodeInspector
+- `src/providers/documentation.ts` - Documentation panel icon updated to tekisasu_icon.svg
 
 ### CI/CD and Templates
 - `.github/workflows/ci.yml` - Artifact names changed to `tekisasu-tools`
@@ -63,9 +87,14 @@ Complete rebranding of the VSCode extension for the TekisasuEngine fork. This ex
 - `.github/ISSUE_TEMPLATE/feature_request.yml` - Extension name references
 
 ### Documentation
-- `README.md` - TekisasuEngine branding, marketplace links, settings documentation
-- `CONTRIBUTING.md` - Example configurations using TekisasuEngine settings
+- `README.md` - TekisasuEngine branding, marketplace links, tekisasuTools.* settings documentation
+- `CONTRIBUTING.md` - Example configurations using tekisasuTools.* settings
 - `CHANGELOG.md` - Historical reference consistency
+
+### Resources
+- `icon.png` - Updated to TekisasuEngine branding
+- `resources/tekisasu_icon.svg` - New TekisasuEngine icon (added)
+- `resources/godot_icon.svg` - Removed (replaced by tekisasu_icon.svg)
 
 ### Test Projects
 - `test_projects/test-dap-project-godot4/project.godot` → `project.tekisasu`
@@ -96,8 +125,10 @@ This is a fork of [godot-vscode-plugin](https://github.com/godotengine/godot-vsc
 When rebasing with upstream:
 1. The deprecated Godot 3 code paths should merge cleanly
 2. Pay attention to new references to `project.godot` (need to be changed to `project.tekisasu`)
-3. Pay attention to new uses of `editorPath.godot4` (need to be changed to `editorPath.tekisasuEngine`)
-4. Watch for new hardcoded port references (should use 6005, not 6008)
+3. Pay attention to new uses of `godotTools.*` namespace (need to be changed to `tekisasuTools.*`)
+4. Pay attention to new uses of `editorPath.godot4` (need to be changed to `editorPath.tekisasuEngine`)
+5. Watch for new hardcoded port references (should use 6005, not 6008)
+6. Watch for new uses of `godot_icon.svg` (need to be changed to `tekisasu_icon.svg`)
 
 ## Commits
 
@@ -108,6 +139,11 @@ The fork changes were implemented in the following commits:
 3. **5f7d7b9** - Hide godot3 setting and rename godot4 to tekisasuEngine
 4. **8631a7c** - Hardcode version to '4' in verify_godot_version calls
 5. **afbaca7** - Rename godot-tools to tekisasu-tools and update author/publisher to Tekisasu
+6. **554bf96** - Add FORK.md documentation and update README for TekisasuEngine
+7. **63eb7a4** - Replace godotTools namespace with tekisasuTools throughout codebase
+8. **b844824** - Fix viewsContainers ID and title to use tekisasuTools branding
+9. **6b26c0a** - Fix remaining godotTools references in EXTENSION_PREFIX and test config
+10. **66cccf7** - Replace godot_icon.svg with tekisasu_icon.svg throughout codebase
 
 ## Support
 

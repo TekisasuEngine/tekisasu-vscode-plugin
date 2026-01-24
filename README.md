@@ -4,6 +4,8 @@ Game development tools for working with [TekisasuEngine](https://github.com/Teki
 
 > **Note**: This is a fork of [godot-vscode-plugin](https://github.com/godotengine/godot-vscode-plugin) customized for TekisasuEngine. See [FORK.md](FORK.md) for details on the changes made for this fork.
 
+> **Breaking Change**: This fork uses the `tekisasuTools.*` namespace for all settings and commands (not `godotTools.*`). Update your VSCode settings accordingly.
+
 **IMPORTANT NOTE:** This extension only supports TekisasuEngine (Godot 4.x). For Godot 3.x support, use the original [godot-tools extension](https://marketplace.visualstudio.com/items?itemName=geequlim.godot-tools).
 
 - [Tekisasu Tools (TekisasuEngine Fork)](#tekisasu-tools-tekisasuengine-fork)
