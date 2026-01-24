@@ -1,16 +1,17 @@
-# Godot Tools
+# Tekisasu Tools (TekisasuEngine Fork)
 
-Game development tools for working with [Godot Engine](http://www.godotengine.org/) in Visual Studio Code.
+Game development tools for working with [TekisasuEngine](https://github.com/TekisasuEngine) (a Godot 4-based engine) in Visual Studio Code.
 
-**IMPORTANT NOTE:** Versions 1.0.0 and later of this extension only support
-Godot 3.2 or later.
+> **Note**: This is a fork of [godot-vscode-plugin](https://github.com/godotengine/godot-vscode-plugin) customized for TekisasuEngine. See [FORK.md](FORK.md) for details on the changes made for this fork.
 
-- [Godot Tools](#godot-tools)
+**IMPORTANT NOTE:** This extension only supports TekisasuEngine (Godot 4.x). For Godot 3.x support, use the original [godot-tools extension](https://marketplace.visualstudio.com/items?itemName=geequlim.godot-tools).
+
+- [Tekisasu Tools (TekisasuEngine Fork)](#tekisasu-tools-tekisasuengine-fork)
 - [Features](#features)
 - [Download](#download)
 - [Commands](#commands)
 - [Configuration](#configuration)
-		- [Godot Editor](#godot-editor)
+		- [TekisasuEngine Editor](#tekisasuengine-editor)
 		- [VS Code](#vs-code)
 - [GDScript Debugger](#gdscript-debugger)
 		- [*Configurations*](#configurations)
@@ -24,7 +25,7 @@ Godot 3.2 or later.
 # Features
 
 (**bold items** are new in Godot Tools `v2.0.0`)
-- **ALL FEATURES FULLY SUPPORT GODOT 4**
+- **ALL FEATURES FULLY SUPPORT GODOT 4** (TekisasuEngine is Godot 4-based)
 - GDScript (`.gd`) language features:
   - syntax highlighting
   - `ctrl+click` on any symbol to jump to its definition or **open its documentation**
@@ -86,9 +87,9 @@ The extension adds a few entries to the VS Code Command Palette under "Godot Too
 
 # Configuration
 
-### Godot Editor
+### TekisasuEngine Editor
 
-You can set VS Code as your default script editor for Godot by following these steps:
+You can set VS Code as your default script editor for TekisasuEngine by following these steps:
 
 1. Open the **Editor Settings**
 2. Select **Text Editor > External**
@@ -97,7 +98,7 @@ You can set VS Code as your default script editor for Godot by following these s
     * On macOS, this executable is typically located at: `/Applications/Visual Studio Code.app/Contents/MacOS/Electron`
 5. Fill **Exec Flags** with `{project} --goto {file}:{line}:{col}`
 
-You can make Godot seamlessly reload VSCode-edited scripts by changing some additional settings. More details about each are available when hovering over the description in the Settings window: 
+You can make TekisasuEngine seamlessly reload VSCode-edited scripts by changing some additional settings. More details about each are available when hovering over the description in the Settings window: 
 
 - **Editor Settings > Text Editor > Behavior > Files > Auto Reload Scripts on External Change**
 - **Editor Settings > Interface > Editor > Save on Focus Loss**
@@ -105,15 +106,19 @@ You can make Godot seamlessly reload VSCode-edited scripts by changing some addi
 
 ### VS Code
 
-You can use the following settings to configure Godot Tools:
+You can use the following settings to configure Tekisasu Tools:
 
 - `godotTools.editorPath.tekisasuEngine`
 
-The path to the TekisasuEngine editor executable. _Under Mac OS, this is the executable inside of Godot.app._
+The path to the TekisasuEngine editor executable. _Under Mac OS, this is the executable inside of the .app bundle._
+
+- `godotTools.lsp.serverPort`
+
+The port for the GDScript Language Server. Default is `6005` for TekisasuEngine.
 
 - `godotTools.lsp.headless`
   
-When using Godot >3.6 or >4.2, Headless LSP mode is available. In Headless mode, the extension will attempt to launch a windowless instance of the Godot editor to use as its Language Server.
+When using TekisasuEngine (Godot 4.2+), Headless LSP mode is available. In Headless mode, the extension will attempt to launch a windowless instance of the TekisasuEngine editor to use as its Language Server.
 
 # GDScript Debugger
 
@@ -183,11 +188,17 @@ Godot's command flags are documented here: https://docs.godotengine.org/en/stabl
 
 ## Issues and contributions
 
-The [Godot Tools](https://github.com/godotengine/godot-vscode-plugin) extension
-is an open source project from the Godot organization. Feel free to open issues
-and create pull requests anytime.
+This is a fork of the [Godot Tools](https://github.com/godotengine/godot-vscode-plugin) extension, customized for TekisasuEngine. 
 
-See the [full changelog](https://github.com/GodotExplorer/tekisasu-tools/blob/master/CHANGELOG.md)
+For issues specific to TekisasuEngine integration:
+- Open issues in the [TekisasuEngine/tekisasu-vscode-plugin](https://github.com/TekisasuEngine/tekisasu-vscode-plugin) repository
+
+For general VSCode plugin issues that may affect the upstream project:
+- Consider reporting to [godotengine/godot-vscode-plugin](https://github.com/godotengine/godot-vscode-plugin)
+
+See [FORK.md](FORK.md) for details on the changes made in this fork.
+
+See the [full changelog](https://github.com/TekisasuEngine/tekisasu-vscode-plugin/blob/master/CHANGELOG.md)
 for the latest changes.
 
 # Contributing
@@ -198,13 +209,13 @@ see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ### Why does it fail to connect to the language server?
 
-- Godot 3.2 or later is required.
-- Make sure the Godot editor is running
-- Make sure to open the project in the Godot editor first. If you opened
+- TekisasuEngine (Godot 4.x) is required for this extension.
+- Make sure the TekisasuEngine editor is running
+- Make sure to open the project in the TekisasuEngine editor first. If you opened
   the editor after opening VS Code, you can click the **Retry** button
   in the bottom-right corner in VS Code.
-- Reset the LSP Server port to the default values in both Godot's Editor Settings and
-  in VSCode.
+- Reset the LSP Server port to the default value (6005) in both TekisasuEngine's Editor Settings and in VSCode.
+- Verify that `godotTools.editorPath.tekisasuEngine` is set correctly in VSCode settings.
 
 ### Why isn't IntelliSense displaying script members?
 
@@ -212,9 +223,9 @@ see [CONTRIBUTING.md](CONTRIBUTING.md)
   infer all variable types.
 - To increase the number of results displayed, use static typing in your scripts.
 
-### Can Godot/VSCode load in my script changes automatically instead of showing a confirmation window?
+### Can TekisasuEngine/VSCode load in my script changes automatically instead of showing a confirmation window?
 
-Godot has some Editor Settings that can help you if your workflow involves changing files in both editors:
+TekisasuEngine has some Editor Settings that can help you if your workflow involves changing files in both editors:
 
 - **Editor Settings > Text Editor > Behavior > Files > Auto Reload Scripts on External Change**
 - **Editor Settings > Interface > Editor > Save on Focus Loss**
