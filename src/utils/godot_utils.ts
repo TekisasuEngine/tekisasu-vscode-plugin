@@ -244,12 +244,11 @@ export function verify_godot_version(tekisasuPath: string, expectedVersion: "3" 
 	
 	// For TekisasuEngine versions (YYYY.x.x), treat as Godot 4 compatible
 	if (isTekisasu) {
-		const year = parseInt(match[2]);
 		// TekisasuEngine is Godot 4-based, so any TekisasuEngine version should match expectedVersion "4"
 		if (expectedVersion === "4") {
 			return { status: "SUCCESS", tekisasuPath: target, version: match[1] };
-		} else if (expectedVersion === "3") {
-			// TekisasuEngine doesn't support Godot 3
+		} else {
+			// TekisasuEngine doesn't support Godot 3 or other versions
 			return { status: "WRONG_VERSION", tekisasuPath: target, version: match[1] };
 		}
 	}
