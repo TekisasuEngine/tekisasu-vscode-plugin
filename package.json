@@ -647,8 +647,8 @@
 		"viewsContainers": {
 			"activitybar": [
 				{
-					"id": "godotTools",
-					"title": "Godot Tools",
+					"id": "tekisasuTools",
+					"title": "Tekisasu Tools",
 					"icon": "resources/godot_icon.svg"
 				}
 			]
@@ -666,7 +666,7 @@
 					"icon": "resources/godot_icon.svg"
 				}
 			],
-			"godotTools": [
+			"tekisasuTools": [
 				{
 					"id": "tekisasuTools.scenePreview",
 					"name": "Scene Preview",
