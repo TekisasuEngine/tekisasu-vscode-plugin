@@ -123,14 +123,14 @@ export class ServerController {
 			switch (result.status) {
 				case "WRONG_VERSION": {
 					const projectVersion = await get_project_version();
-					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
+					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified TekisasuEngine executable is v${result.version}`;
 					log.warn(message);
 					window.showErrorMessage(message, "Ok");
 					this.abort();
 					return;
 				}
 				case "INVALID_EXE": {
-					const message = `Cannot launch debug session: '${godotPath}' is not a valid Godot executable`;
+					const message = `Cannot launch debug session: '${godotPath}' is not a valid TekisasuEngine executable`;
 					log.warn(message);
 					window.showErrorMessage(message, "Ok");
 					this.abort();
@@ -154,14 +154,14 @@ export class ServerController {
 			switch (result.status) {
 				case "WRONG_VERSION": {
 					const projectVersion = await get_project_version();
-					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified Godot executable is v${result.version}`;
+					const message = `Cannot launch debug session: The current project uses Godot v${projectVersion}, but the specified TekisasuEngine executable is v${result.version}`;
 					log.warn(message);
 					prompt_for_godot_executable(message, settingName);
 					this.abort();
 					return;
 				}
 				case "INVALID_EXE": {
-					const message = `Cannot launch debug session: '${godotPath}' is not a valid Godot executable`;
+					const message = `Cannot launch debug session: '${godotPath}' is not a valid TekisasuEngine executable`;
 					log.warn(message);
 					prompt_for_godot_executable(message, settingName);
 					this.abort();

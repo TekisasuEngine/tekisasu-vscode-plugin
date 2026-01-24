@@ -102,14 +102,14 @@ async function initial_setup() {
 			break;
 		}
 		case "WRONG_VERSION": {
-			const message = `The specified Godot executable, '${godotPath}' is the wrong version. 
+			const message = `The specified TekisasuEngine executable, '${godotPath}' is the wrong version. 
 				The current project uses Godot v${projectVersion}, but the specified executable is Godot v${result.version}.
 				Extension features will not work correctly unless this is fixed.`;
 			prompt_for_godot_executable(message, settingName);
 			break;
 		}
 		case "INVALID_EXE": {
-			const message = `The specified Godot executable, '${godotPath}' is invalid. 
+			const message = `The specified TekisasuEngine executable, '${godotPath}' is invalid. 
 				Extension features will not work correctly unless this is fixed.`;
 			prompt_for_godot_executable(message, settingName);
 			break;
@@ -185,12 +185,12 @@ async function open_workspace_with_editor() {
 			break;
 		}
 		case "WRONG_VERSION": {
-			const message = `Cannot launch Godot editor: The current project uses Godot v${projectVersion}, but the specified Godot executable is version ${result.version}`;
+			const message = `Cannot launch Godot editor: The current project uses Godot v${projectVersion}, but the specified TekisasuEngine executable is version ${result.version}`;
 			prompt_for_godot_executable(message, settingName);
 			break;
 		}
 		case "INVALID_EXE": {
-			const message = `Cannot launch Godot editor: '${settingName}' value of '${godotPath}' is not a valid Godot executable`;
+			const message = `Cannot launch Godot editor: '${settingName}' value of '${godotPath}' is not a valid TekisasuEngine executable`;
 			prompt_for_godot_executable(message, settingName);
 			break;
 		}
