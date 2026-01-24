@@ -94,7 +94,7 @@ async function initial_setup() {
 	}
 	// Always use tekisasuEngine setting (assumes Godot 4)
 	const settingName = "editorPath.tekisasuEngine";
-	const result = verify_godot_version(get_configuration(settingName), projectVersion[0]);
+	const result = verify_godot_version(get_configuration(settingName), "4");
 	const godotPath = result.godotPath;
 
 	switch (result.status) {
@@ -159,7 +159,7 @@ async function open_workspace_with_editor() {
 
 	// Always use tekisasuEngine setting (assumes Godot 4)
 	const settingName = "editorPath.tekisasuEngine";
-	const result = verify_godot_version(get_configuration(settingName), projectVersion[0]);
+	const result = verify_godot_version(get_configuration(settingName), "4");
 	const godotPath = result.godotPath;
 
 	switch (result.status) {

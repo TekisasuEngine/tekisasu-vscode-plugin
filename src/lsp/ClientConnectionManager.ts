@@ -119,7 +119,7 @@ export class ClientConnectionManager {
 		const settingName = "editorPath.tekisasuEngine";
 		let godotPath = get_configuration(settingName);
 
-		const result = verify_godot_version(godotPath, projectVersion[0]);
+		const result = verify_godot_version(godotPath, "4");
 		godotPath = result.godotPath;
 
 		switch (result.status) {
