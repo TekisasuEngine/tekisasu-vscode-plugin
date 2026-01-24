@@ -649,7 +649,7 @@
 				{
 					"id": "tekisasuTools",
 					"title": "Tekisasu Tools",
-					"icon": "resources/godot_icon.svg"
+					"icon": "resources/tekisasu_icon.svg"
 				}
 			]
 		},
@@ -658,19 +658,19 @@
 				{
 					"id": "tekisasuTools.activeSceneTree",
 					"name": "Active Scene Tree",
-					"icon": "resources/godot_icon.svg"
+					"icon": "resources/tekisasu_icon.svg"
 				},
 				{
 					"id": "tekisasuTools.nodeInspector",
 					"name": "Inspector",
-					"icon": "resources/godot_icon.svg"
+					"icon": "resources/tekisasu_icon.svg"
 				}
 			],
 			"tekisasuTools": [
 				{
 					"id": "tekisasuTools.scenePreview",
 					"name": "Scene Preview",
-					"icon": "resources/godot_icon.svg"
+					"icon": "resources/tekisasu_icon.svg"
 				}
 			]
 		},

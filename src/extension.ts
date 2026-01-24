@@ -174,7 +174,7 @@ async function open_workspace_with_editor() {
 			}
 			const options: vscode.ExtensionTerminalOptions = {
 				name: "Godot Editor",
-				iconPath: get_extension_uri("resources/godot_icon.svg"),
+				iconPath: get_extension_uri("resources/tekisasu_icon.svg"),
 				pty: new GodotEditorTerminal(command),
 				isTransient: true,
 			};

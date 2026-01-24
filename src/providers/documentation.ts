@@ -125,7 +125,7 @@ export class GDDocumentationProvider implements CustomReadonlyEditorProvider {
 			panel.webview.html = this.htmlDb.get(className).replace("displayMinimap", "none;");
 		}
 
-		panel.iconPath = get_extension_uri("resources/godot_icon.svg");
+		panel.iconPath = get_extension_uri("resources/tekisasu_icon.svg");
 		panel.webview.onDidReceiveMessage((msg) => {
 			if (msg.type === "INSPECT_NATIVE_SYMBOL") {
 				const uri = make_docs_uri(msg.data.native_class, msg.data.symbol_name);
